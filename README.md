@@ -25,6 +25,18 @@ It implements:
 - Bun
 - PostgreSQL (running and reachable)
 
+## Cursor cloud environment defaults
+
+Repo-level cloud agent defaults live in:
+
+- `.cursor/environment.json`
+- `.cursor/cloud/install.sh`
+- `.cursor/cloud/start.sh`
+
+These preinstall Bun, Drizzle workflow prerequisites, and project dependencies
+so background/cloud agents can run `bun install`, `bun run build`, and
+`bun test` without manual bootstrap.
+
 ## Environment variables
 
 Copy `.env.example` to `.env.local` and set values:
