@@ -37,6 +37,11 @@ These preinstall Bun, Drizzle workflow prerequisites, and project dependencies
 so background/cloud agents can run `bun install`, `bun run build`, and
 `bun test` without manual bootstrap.
 
+Optional cloud-agent PostgreSQL automation is supported via:
+
+- `START_LOCAL_POSTGRES=1` (start local Postgres on agent boot)
+- `INSTALL_LOCAL_POSTGRES_SERVER=1` (install Postgres server package in install phase)
+
 ## Environment variables
 
 Copy `.env.example` to `.env.local` and set values:

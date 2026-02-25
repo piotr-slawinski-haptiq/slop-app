@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+is_truthy() {
+  case "${1:-}" in
+    1|true|TRUE|True|yes|YES|on|ON)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
 install_apt_prerequisites() {
   if ! command -v apt-get >/dev/null 2>&1; then
     return
@@ -29,6 +40,10 @@ install_apt_prerequisites() {
     g++ \
     libssl-dev \
     postgresql-client
+
+  if is_truthy "${INSTALL_LOCAL_POSTGRES_SERVER:-0}"; then
+    ${installer} apt-get install -y --no-install-recommends postgresql
+  fi
 }
 
 install_bun() {
