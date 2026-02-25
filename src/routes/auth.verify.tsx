@@ -1,23 +1,36 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 
-import { verifyMagicLinkFn } from '@/lib/server-fns/auth.functions'
+import { verifyMagicLink } from '@/lib/auth/magic-link.server'
+
+function redirectResponse(to: string): Response {
+  return new Response(null, {
+    status: 307,
+    headers: {
+      location: to,
+    },
+  })
+}
 
 export const Route = createFileRoute('/auth/verify')({
-  validateSearch: (search) => ({
-    token: typeof search.token === 'string' ? search.token : '',
-  }),
-  loader: async ({ search }) => {
-    try {
-      await verifyMagicLinkFn({
-        data: {
-          token: search.token,
-        },
-      })
-    } catch {
-      throw redirect({ to: '/login' })
-    }
+  server: {
+    handlers: {
+      GET: async ({ request }) => {
+        const url = new URL(request.url)
+        const token = url.searchParams.get('token') ?? ''
 
-    throw redirect({ to: '/' })
+        if (!token) {
+          return redirectResponse('/login')
+        }
+
+        try {
+          await verifyMagicLink(token)
+        } catch {
+          return redirectResponse('/login')
+        }
+
+        return redirectResponse('/')
+      },
+    },
   },
   component: VerifyRouteComponent,
 })

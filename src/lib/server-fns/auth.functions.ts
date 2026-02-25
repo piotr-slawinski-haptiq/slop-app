@@ -1,8 +1,20 @@
 import { createServerFn } from '@tanstack/react-start'
+import { setResponseStatus } from '@tanstack/react-start/server'
 
 import { requestMagicLink, verifyMagicLink } from '@/lib/auth/magic-link.server'
 import { destroySession, getSessionUser } from '@/lib/auth/session.server'
-import { withHttpStatus } from '@/lib/server-fns/http-status.server'
+import { HttpError } from '@/lib/http-error'
+
+async function withHttpStatus<T>(work: () => Promise<T>): Promise<T> {
+  try {
+    return await work()
+  } catch (error) {
+    if (error instanceof HttpError) {
+      setResponseStatus(error.statusCode, error.message)
+    }
+    throw error
+  }
+}
 
 export const getCurrentUserFn = createServerFn({ method: 'GET' }).handler(
   async () => {

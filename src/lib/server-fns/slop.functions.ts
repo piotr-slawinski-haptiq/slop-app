@@ -1,7 +1,8 @@
 import { createServerFn } from '@tanstack/react-start'
+import { setResponseStatus } from '@tanstack/react-start/server'
 
 import { requireSessionUser } from '@/lib/auth/session.server'
-import { withHttpStatus } from '@/lib/server-fns/http-status.server'
+import { HttpError } from '@/lib/http-error'
 import {
   addRequest,
   cancelRequestById,
@@ -13,6 +14,17 @@ import {
   updateThreshold,
   upsertItem,
 } from '@/lib/slop/service.server'
+
+async function withHttpStatus<T>(work: () => Promise<T>): Promise<T> {
+  try {
+    return await work()
+  } catch (error) {
+    if (error instanceof HttpError) {
+      setResponseStatus(error.statusCode, error.message)
+    }
+    throw error
+  }
+}
 
 export const getDashboardDataFn = createServerFn({ method: 'GET' }).handler(
   async () => {
