@@ -1,0 +1,41 @@
+.shell {
+  position: relative;
+  display: grid;
+  gap: var(--space2);
+}
+
+.results {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--colorSurface);
+  border: 1px solid var(--colorBorder);
+  border-radius: var(--radiusMd);
+  box-shadow: var(--shadowCard);
+  z-index: 10;
+  max-height: 260px;
+  overflow: auto;
+  padding: var(--space2);
+}
+
+.resultButton {
+  width: 100%;
+  border: 0;
+  border-radius: var(--radiusSm);
+  background: transparent;
+  text-align: left;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.resultButton:hover {
+  background: #fff8d4;
+}
+
+.emptyHint {
+  margin: 0;
+  font-size: var(--fontSizeSm);
+  color: var(--colorTextMuted);
+  padding: 8px 10px;
+}

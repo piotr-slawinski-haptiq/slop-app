@@ -1,0 +1,30 @@
+:global(:root) {
+  --colorPrimary: #ffde03;
+  --colorPrimaryHover: #f2ca00;
+  --colorTextStrong: #111111;
+  --colorTextDefault: #1f1f1f;
+  --colorTextMuted: #5f5f5f;
+  --colorSurface: #ffffff;
+  --colorSurfaceSubtle: #f8f8f8;
+  --colorBorder: #e4e4e4;
+  --colorSuccess: #19a25e;
+  --colorDanger: #d62f2f;
+  --shadowCard: 0 8px 20px rgba(17, 17, 17, 0.08);
+  --shadowLifted: 0 16px 30px rgba(17, 17, 17, 0.16);
+  --radiusSm: 8px;
+  --radiusMd: 14px;
+  --radiusLg: 20px;
+  --space1: 4px;
+  --space2: 8px;
+  --space3: 12px;
+  --space4: 16px;
+  --space5: 20px;
+  --space6: 24px;
+  --space8: 32px;
+  --fontFamilyBase: 'Inter', 'DM Sans', system-ui, -apple-system, sans-serif;
+  --fontSizeSm: 0.875rem;
+  --fontSizeBase: 1rem;
+  --fontSizeLg: 1.125rem;
+  --fontSizeXl: 1.25rem;
+  --fontSize2xl: 1.5rem;
+}

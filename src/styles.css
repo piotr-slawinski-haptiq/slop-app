@@ -1,0 +1,35 @@
+@import './styles/tokens.module.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--fontFamilyBase);
+  color: var(--colorTextDefault);
+  background: linear-gradient(
+    180deg,
+    var(--colorSurfaceSubtle) 0%,
+    #fefbf1 40%,
+    #fffef5 100%
+  );
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input {
+  font: inherit;
+}

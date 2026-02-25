@@ -1,0 +1,49 @@
+.card {
+  display: grid;
+  gap: var(--space2);
+  padding: var(--space4);
+  border-radius: var(--radiusLg);
+  border: 1px solid var(--colorBorder);
+  background: var(--colorSurface);
+  box-shadow: var(--shadowCard);
+  min-height: 124px;
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease,
+    border-color 150ms ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadowLifted);
+  border-color: #d8d8d8;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space2);
+}
+
+.name {
+  margin: 0;
+  font-size: var(--fontSizeLg);
+  font-weight: 700;
+  color: var(--colorTextStrong);
+}
+
+.category {
+  margin: 0;
+  color: var(--colorTextMuted);
+  font-size: var(--fontSizeSm);
+}
+
+.badge {
+  font-size: var(--fontSizeSm);
+  border-radius: 999px;
+  background: #fff7bd;
+  border: 1px solid #ffe166;
+  color: #6f5b00;
+  padding: 4px 8px;
+}

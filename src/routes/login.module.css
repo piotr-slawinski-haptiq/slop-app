@@ -1,0 +1,63 @@
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: var(--space6);
+}
+
+.card {
+  width: min(460px, 100%);
+  background: var(--colorSurface);
+  border: 1px solid var(--colorBorder);
+  border-radius: var(--radiusLg);
+  box-shadow: var(--shadowCard);
+  padding: var(--space6);
+  display: grid;
+  gap: var(--space4);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--fontSize2xl);
+  color: var(--colorTextStrong);
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--colorTextMuted);
+  line-height: 1.5;
+}
+
+.form {
+  display: grid;
+  gap: var(--space3);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space2);
+  align-items: center;
+}
+
+.hint {
+  font-size: var(--fontSizeSm);
+  color: var(--colorTextMuted);
+  margin: 0;
+}
+
+.error {
+  color: var(--colorDanger);
+  font-size: var(--fontSizeSm);
+  margin: 0;
+}
+
+.success {
+  color: var(--colorSuccess);
+  font-size: var(--fontSizeSm);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.previewLink {
+  word-break: break-all;
+}

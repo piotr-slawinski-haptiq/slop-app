@@ -1,0 +1,16 @@
+.input {
+  width: 100%;
+  border: 1px solid var(--colorBorder);
+  border-radius: var(--radiusMd);
+  padding: 10px 12px;
+  font-size: var(--fontSizeBase);
+  color: var(--colorTextStrong);
+  background: var(--colorSurface);
+  transition: border-color 120ms ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #c7aa00;
+  box-shadow: 0 0 0 3px rgba(255, 222, 3, 0.25);
+}
