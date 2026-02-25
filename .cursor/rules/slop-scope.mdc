@@ -1,0 +1,34 @@
+---
+description: SLOP MVP scope – in scope, out of scope, later (V2+)
+alwaysApply: true
+---
+
+# SLOP Scope
+
+From [slop-app-plan.md](slop-app-plan.md) §6 Scope. Do not add MVP scope that contradicts this.
+
+## In scope (MVP)
+
+- **Catalog**: Items with name, category, **is_evergreen**. CRUD by orderer.
+- **Requests**: item, requester, status; linked to fulfillment when list is fulfilled. No quantity or notes.
+- **Fulfillment**: trigger (immediate | threshold), status, **fulfilled_at** (auto); orderer marks as fulfilled; list clears.
+- **Fulfillment threshold**: Configurable (min items only—min_pending_items); orderer can change.
+- **Single shared list**: One instance per product; everyone sees the same items. No batching window.
+- **Auth and roles**: orderer vs colleague; @haptiq.com only.
+- **Notifications**: Notify orderer when immediate (evergreen added) or threshold reached. In-app first; no Slack for MVP.
+
+## Out of scope (MVP)
+
+- **Inventory tracking** – No stock levels, shelves, or “inventory” subdomain.
+- **Manual order cycles** – No “open/close week” or week-based cycles.
+- **Approvals, budgets, cost tracking** – Not in MVP.
+- **Multi-office** – Single office/tenant only.
+- **Slack** – No Slack integration in MVP.
+
+## Later (V2+)
+
+- Recurring evergreen suggestions (e.g. “milk every Monday”).
+- Export list (CSV/PDF).
+- Slack: add request, notify on fulfillment, “What’s on the list?”.
+
+When proposing features or API changes, check they fit “In scope” and do not reintroduce “Out of scope” concepts (e.g. inventory or multi-office) without an explicit plan change.

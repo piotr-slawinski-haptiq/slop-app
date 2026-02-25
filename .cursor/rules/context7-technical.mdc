@@ -1,0 +1,22 @@
+---
+description: Use Context7 for technical prompts (libraries, frameworks, APIs)
+alwaysApply: true
+---
+
+# Context7 for Technical Prompts
+
+When the user asks about or you need to implement something that involves an **external library, framework, or API**, use **Context7** to get up-to-date documentation and examples.
+
+1. **Resolve the library ID** – Call the Context7 `resolve-library-id` tool (or equivalent) with the library/framework name (e.g. "TanStack Start", "Bun", "PostgreSQL", "React") to get the exact Context7 library ID (e.g. `/tanstack/start`).
+2. **Query the docs** – Call the Context7 `query-docs` tool with that `libraryId` and a **specific question or task** (e.g. "How to create a route with loader and action" or "CSS Modules with TanStack Start"). Be specific; avoid single-word queries.
+3. **Use the result** – Prefer the returned docs and code examples over generic or outdated knowledge when implementing or answering.
+
+Use Context7 for:
+- TanStack Start / TanStack Router / TanStack Query
+- Bun (runtime, APIs, package scripts)
+- PostgreSQL (drivers, queries, migrations)
+- React, CSS Modules
+- Auth libraries (e.g. magic link, domain allowlist)
+- Any other dependency mentioned in the project or the user's question
+
+Do not call `query-docs` more than 3 times per question; if the answer is unclear after that, proceed with the best information you have.

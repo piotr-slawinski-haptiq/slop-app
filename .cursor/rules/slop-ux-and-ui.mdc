@@ -1,0 +1,31 @@
+---
+description: SLOP design and UX from plan – central list, cards, omnisearch, scatter
+alwaysApply: true
+---
+
+# SLOP UX and UI
+
+Follow [slop-app-plan.md](slop-app-plan.md) §5 Design & UX Direction.
+
+## UX concept
+
+1. **Single central list** – One order list only; either empty or has items. No “pending” vs “current” state. Orderer clears the list when they have placed the order (in another app or in store). No tabs or multiple lists for “the” list.
+2. **Products as cards** – Catalog items are shown as cards in a loose, “tossed” or spatial layout around (or beside) the list. Not a dense table.
+3. **Add to list** – User picks a product card (click or drag) and adds it to the central list. One instance per product; adding again is no-op or idempotent.
+4. **Omnisearch** – If a product is not in the catalog, user can search globally or **create a new product** from the same tool (find-or-create). Single entry point (e.g. command palette or search bar).
+5. **Fulfill → scatter** – When the orderer marks the list as fulfilled, the list clears and products **visually “scatter” back** (animation) into the product space, so the list is empty and the next order feels like a fresh start.
+
+## Principles
+
+- **Simple, uncluttered** – One list, one product space. Avoid extra panels, tabs, or states that aren’t in the plan.
+- **Delight on reset** – The fulfill moment should feel visible and satisfying (scatter-back animation), not just a silent clear.
+
+## Inspiration (for reference)
+
+- **Visual style / design system**: **Blinkit** ([blinkit.com](https://blinkit.com/)) – primary stylistic reference. See **slop-design-system.mdc** for palette (yellow/black), typography (Gilroy or geometric sans), Lambda/Bolt structure, and tokens.
+- Layout: Miro, FigJam, Apple Freeform (canvas, one central zone).
+- List + cards: Trello (one column = list, rest = cards).
+- Market reset: Marvel Snap, Slay the Spire (shop/list clears).
+- Omnisearch: Linear, Raycast, Notion (find or create in one place).
+
+When designing or implementing UI, prefer these patterns over generic CRUD layouts. Use Blinkit-inspired look-and-feel (bold, clean, token-based) from slop-design-system.mdc. Colleague view: central list + product cards + omnisearch. Orderer view: same list + fulfill action + admin (catalog, threshold, past orders).

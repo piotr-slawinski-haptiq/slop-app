@@ -1,0 +1,31 @@
+---
+description: SLOP domain model, data model, and business invariants
+alwaysApply: true
+---
+
+# SLOP Domain and Data
+
+Align with [slop-app-plan.md](slop-app-plan.md) §3 Domain Model and §7 Data Model.
+
+## Entities and fields
+
+- **Items**: id, name, category, **is_evergreen**, created_at. No default_quantity or unit.
+- **Requests**: id, item_id, requester_id (or email), status (pending | in_fulfillment | fulfilled), **fulfillment_id** (nullable), created_at. **No quantity, no notes** — orderer decides quantity when placing the order.
+- **Fulfillments**: id, trigger (immediate | threshold), status (pending | fulfilled), **fulfilled_at** (set automatically when orderer marks as ordered, not user input), created_at. Requests reference fulfillment_id.
+- **FulfillmentThreshold** (or settings): **min_pending_items** only (e.g. 5); orderer-configurable. Notify when count of distinct items on list >= threshold. No min requesters in MVP.
+- **Users**: id, email, role (orderer | colleague).
+
+## Invariants (enforce in code and DB)
+
+1. **Single shared list** – There is exactly one “current” order list. It is the set of requests that are pending or in_fulfillment and not yet attached to a fulfilled fulfillment. No “pending list” vs “current list” — just one list that is either empty or has items.
+2. **One instance per product on the list** – At most one request per item_id in the current list. Adding an item that is already on the list must not create a duplicate; either no-op or idempotent add.
+3. **Fulfillment record on clear** – When orderer marks the list as ordered: create one Fulfillment row with fulfilled_at = now() (server-set, not from client), attach the current list’s requests to it, then clear the list (requests move to fulfilled). No optional note or date from the user.
+4. **No inventory** – No stock levels, shelves, or inventory subdomain. Request-driven only.
+5. **No order cycles** – No manual “open/close week” or “order cycle” concept. Fulfillment + threshold replace that.
+
+## Fulfillment logic (short)
+
+- New request → add to list (idempotent per item). If item.is_evergreen → notify orderer immediately. Else → if list size >= threshold, notify orderer.
+- Orderer “fulfills” → create Fulfillment with auto fulfilled_at, attach current list requests, set their status to fulfilled; list is now empty for the next order.
+
+When defining or changing API routes, mutations, or DB schema, preserve these invariants.

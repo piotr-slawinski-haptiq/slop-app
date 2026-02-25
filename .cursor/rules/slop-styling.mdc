@@ -1,0 +1,19 @@
+---
+description: SLOP styling – CSS Modules only, colocation, naming
+globs: "**/*.tsx,**/*.jsx,**/*.module.css"
+alwaysApply: false
+---
+
+# SLOP Styling
+
+Use **CSS Modules** only. No Tailwind, styled-components, or global CSS for component styling (unless the plan is updated).
+
+## Conventions
+
+- **File naming**: One CSS Module per component (or per route/page) when needed. Name: `ComponentName.module.css` next to `ComponentName.tsx` (e.g. `ProductCard.module.css` next to `ProductCard.tsx`).
+- **Import**: `import styles from './ComponentName.module.css'` and use `styles.className` in JSX. No global class names for component-specific styles.
+- **Class names**: Use camelCase in the CSS file and reference as `styles.camelCase` (e.g. `.cardWrapper`, `.centralList`). Avoid BEM in the file unless the team prefers it; keep names short and semantic.
+- **Scoping**: Classes in `.module.css` are locally scoped. Use them for layout, spacing, and visual state of that component. Shared tokens (e.g. colors, font sizes) can live in a shared module (e.g. `tokens.module.css` or `variables.module.css`) and be imported where needed.
+- **No inline styles for layout** – Prefer classes in CSS Modules for layout and responsive behavior; reserve inline styles for one-off overrides or dynamic values (e.g. position from drag).
+
+When adding new UI components, add a colocated `*.module.css` and use it instead of introducing a new styling system.

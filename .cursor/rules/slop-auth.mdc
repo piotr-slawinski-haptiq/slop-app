@@ -1,0 +1,26 @@
+---
+description: SLOP auth – who can sign in, roles, where to enforce
+alwaysApply: true
+---
+
+# SLOP Auth
+
+From [slop-app-plan.md](slop-app-plan.md): only **@haptiq.com** users; roles **orderer** and **colleague**.
+
+## Allowed users
+
+- **Only** users whose email domain is **haptiq.com** (e.g. `user@haptiq.com`). Reject or block sign-in for any other domain.
+- **Sign-in mechanism**: **Magic link** (MVP). User enters email; backend sends a one-time link; user clicks it. After verifying the token, check `email.endsWith('@haptiq.com')` (or equivalent); if not, return 403 or redirect to “access denied”. Then create a **session** and set a **session cookie** (httpOnly, secure, sameSite) so the user stays logged in without using a magic link again until logout or session expiry.
+
+## Roles
+
+- **Colleague**: Can add and cancel requests. **Cannot** view “my requests” or past orders. Can see the single shared order list (to add to it).
+- **Orderer**: Can see the order list; clear the list when they have placed the order (marks as fulfilled); manage catalog (CRUD items, is_evergreen); set fulfillment threshold; **view past orders (fulfillment history) in admin panel**.
+
+## Where to enforce
+
+- **Auth middleware / session**: On every protected route, ensure user is authenticated (via session cookie or equivalent) and email is @haptiq.com. Reject non-haptiq.com even if they have a valid magic-link token from elsewhere.
+- **Role checks**: For admin-only or orderer-only actions (e.g. “mark list fulfilled”, “edit catalog”, “view past orders”), verify `user.role === 'orderer'`. Colleagues must not call fulfill or catalog management endpoints.
+- **DB / API**: Do not expose past fulfillments or admin settings to colleagues; restrict by role in loaders/actions or API layer.
+
+Prefer a single source of truth for “allowed domain” (e.g. env `ALLOWED_EMAIL_DOMAIN=haptiq.com` or constant) so it’s easy to change later if needed.

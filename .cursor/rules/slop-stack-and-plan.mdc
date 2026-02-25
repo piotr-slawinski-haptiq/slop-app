@@ -1,0 +1,30 @@
+---
+description: SLOP stack and pointer to plan and project rules
+alwaysApply: true
+---
+
+# SLOP Stack and Plan
+
+**SLOP** = Shopping List Ordering Platform. Product and technical spec: [slop-app-plan.md](slop-app-plan.md).
+
+## Stack (non-negotiable)
+
+| Layer      | Choice             | Notes                                                                           |
+| ---------- | ------------------ | ------------------------------------------------------------------------------- |
+| Full-stack | TanStack Start     | File-based routing, loaders, actions; Vinxi/Bun. Use Context7 for current docs. |
+| Styling    | CSS Modules        | `*.module.css` colocated with components. See `slop-styling.mdc`.               |
+| Runtime    | Bun                | `bun run`, `bun test`, `bunx` in scripts.                                       |
+| Data       | PostgreSQL         | No SQLite.                                                                      |
+| Auth       | @haptiq.com only   | Magic link; session cookies for persistence. See `slop-auth.mdc`.               |
+| Slack      | Out of scope (MVP) | V2+.                                                                            |
+
+## Other project rules
+
+- **slop-domain-and-data.mdc** – Entities, fields, invariants (one list, one instance per product, no quantity/notes, fulfilled_at auto).
+- **slop-auth.mdc** – Who can sign in, roles (orderer vs colleague), where to enforce.
+- **slop-ux-and-ui.mdc** – Design and UX from the plan (central list, cards, omnisearch, scatter-on-fulfill).
+- **slop-design-system.mdc** – Visual style and design system inspired by Blinkit (Lambda): palette, typography, tokens, Atomic Design.
+- **slop-styling.mdc** – CSS Modules conventions.
+- **slop-scope.mdc** – In/out of scope for MVP; avoid inventory, multi-office, etc.
+
+When adding features or API surface, match the plan’s domain model and flows; re-read the relevant plan section if unsure.

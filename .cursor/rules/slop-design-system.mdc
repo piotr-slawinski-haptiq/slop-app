@@ -1,0 +1,49 @@
+---
+description: SLOP design system – Blinkit-inspired visual style and tokens
+alwaysApply: true
+---
+
+# SLOP Design System (Blinkit-Inspired)
+
+**Primary stylistic reference**: [Blinkit](https://blinkit.com/). Use for look-and-feel; SLOP’s flows and UX follow the product plan, not Blinkit’s app.
+
+## Blinkit / Lambda design system
+
+- **Name**: Lambda (Blinkit); internally also “Bolt”.
+- **Docs**: [Lambda by Blinkit](https://lambda.blinkit.com/) (e.g. [Why build a Design System?](https://lambda.blinkit.com/why-build-a-design-system-faa4285f897e)).
+- **Figma**: Community file [Blinkit-UI](https://www.figma.com/community/file/1481577847723242789/blinkit-ui) for components and patterns.
+- **Philosophy**: Clean and simple interface; customer is the focus; seamless and fast; “immaculate and fresh feeling.”
+
+## Palette
+
+- **Primary accent**: Bright yellow (high visibility, instant recognition). Use for primary actions, key highlights, and brand moments.
+- **Neutral / text**: Black (and grays) for text and primary UI. Keep contrast strong.
+- **Principle**: Limited, bold palette. Avoid muddy or low-contrast combinations.
+
+Define these as **constants/tokens** in CSS (e.g. in a shared `tokens.module.css` or design-tokens file) and use tokens in components instead of raw hex values.
+
+## Typography
+
+- **Reference**: **Gilroy** (Blinkit’s choice – geometric, clear, modern, good readability). If Gilroy is not available, use a similar **geometric sans-serif** (e.g. Inter, DM Sans, or a variable font with a “fresh” feel).
+- **Principle**: Clear hierarchy; avoid decorative or script type for UI. Prefer one primary typeface with weight/size variants.
+
+## Structure (Atomic Design)
+
+Build the UI in layers:
+
+1. **Constants** – Colors, type scales, spacing, shadows, radii, icons. Single source of truth; no magic numbers in components.
+2. **Elements** – Buttons, inputs, links, tags. Use constants only.
+3. **Components** – Search, product card, list row, etc. Compose from elements and constants.
+4. **Widgets / sections** – Larger blocks (e.g. central list, product grid). Compose from components.
+5. **Pages** – Full layouts composed from widgets.
+
+When adding new UI, add constants first if new values are needed; then elements or components. Keep CSS Modules colocated (see `slop-styling.mdc`).
+
+## Principles
+
+- **Clean and simple** – No visual clutter; every element has a purpose.
+- **Speed and clarity** – Fast to parse; clear hierarchy and touch targets.
+- **Token-first** – No hard-coded colors or spacing in components; use design tokens (CSS variables or shared module).
+- **Blinkit-inspired, not a clone** – Same spirit (bold yellow/black, geometric type, clean), adapted to SLOP’s single list, cards, and omnisearch.
+
+When in doubt, prefer the Blinkit/Lambda direction: bold, clear, and fresh over decorative or generic “corporate” UI.
