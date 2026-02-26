@@ -96,4 +96,19 @@
   --zSticky: 200;
   --zOverlay: 300;
   --zModal: 400;
+
+  /* ── DRF / Racing ── */
+  --colorDrfDarkBlue: #19345e;
+  --colorDrfBlue: #06c;
+  --colorDrfGreen: #0693;
+  --colorDrfRed: #ce2029;
+  --colorDrfTurf: #518121;
+  --colorDrfSynthetic: #2d87ae;
+  --colorDrfDirt: #b27e4a;
+  --colorDrfGray700: #444;
+  --colorDrfGray400: #888;
+  --colorDrfGray800: #222;
+  --colorDrfBgSubtle: #f4f6fa;
+  --colorDrfBgTrack: #f2f7ff;
+  --colorDrfBorder: #dae4e9;
 }

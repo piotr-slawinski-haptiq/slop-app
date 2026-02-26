@@ -1,0 +1,473 @@
+/* Card container: left accent bar + content */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  background: var(--colorSurface);
+  border: 1px solid var(--colorDrfBorder);
+  border-radius: var(--radiusSm);
+  overflow: hidden;
+  width: 100%;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 7px;
+  background: var(--colorPrimary);
+}
+
+/* Top section: padding so content doesn't sit under accent */
+.top {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: var(--space2) var(--space4);
+}
+
+.companyInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space2);
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.titlesRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space2);
+}
+
+.saddleCloth {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 2px;
+  border-radius: var(--radiusSm);
+  background: var(--colorPrimary);
+}
+
+.saddleClothNumber {
+  font-size: 14px;
+  font-weight: var(--fontWeightBold);
+  line-height: 16px;
+  color: var(--colorTextStrong);
+  text-align: center;
+}
+
+.horseName {
+  font-size: 1rem;
+  font-weight: var(--fontWeightSemibold);
+  line-height: 24px;
+  color: var(--colorDrfGray800);
+}
+
+.horseNameSuffix {
+  font-size: var(--fontSizeXs);
+  font-weight: var(--fontWeightNormal);
+  color: var(--colorDrfGray400);
+  margin-left: 2px;
+}
+
+.powerpicks {
+  position: relative;
+  flex-shrink: 0;
+  width: 34px;
+  height: 14px;
+  border-radius: 1px;
+  background: var(--colorDrfDarkBlue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding-left: 16px;
+}
+
+.powerpicksStar {
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  color: var(--colorPrimary);
+}
+
+.powerpicksLabel {
+  font-size: 9px;
+  font-weight: var(--fontWeightBold);
+  line-height: 12px;
+  color: var(--colorTextInverse);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: var(--fontSizeSm);
+}
+
+.label {
+  font-weight: var(--fontWeightNormal);
+  color: var(--colorDrfGray700);
+}
+
+.labelValue {
+  font-weight: var(--fontWeightSemibold);
+  color: var(--colorDrfDarkBlue);
+  margin-left: var(--space2);
+}
+
+.ratingPill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 2px var(--space1);
+  border-radius: 2px;
+  background: var(--colorDrfBgSubtle);
+  font-size: var(--fontSizeXs);
+  font-weight: var(--fontWeightMedium);
+  color: var(--colorDrfBlue);
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  background: var(--colorDrfBorder);
+  flex-shrink: 0;
+}
+
+/* Stats row: Live Odds, Projected, Career Record */
+.bottom {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space2);
+  padding-bottom: var(--space4);
+}
+
+.statsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: var(--space4);
+  padding-right: var(--space3);
+}
+
+.oddsBox {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space1);
+  border-radius: var(--radiusXs);
+  background: var(--colorDrfBgSubtle);
+  white-space: nowrap;
+}
+
+.oddsLabel {
+  font-size: var(--fontSizeXs);
+  font-weight: var(--fontWeightNormal);
+  color: var(--colorDrfGray700);
+  line-height: 16px;
+}
+
+.oddsValueLive {
+  font-size: var(--fontSizeSm);
+  font-weight: var(--fontWeightMedium);
+  color: var(--colorDrfGreen);
+  text-align: right;
+  line-height: 20px;
+}
+
+.oddsValueProjected {
+  font-size: var(--fontSizeSm);
+  font-weight: var(--fontWeightMedium);
+  color: var(--colorDrfRed);
+  text-align: right;
+  line-height: 20px;
+}
+
+.statsDivider {
+  width: 1px;
+  height: 46px;
+  background: var(--colorDrfBorder);
+  flex-shrink: 0;
+}
+
+.careerRecord {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space1);
+  align-items: flex-start;
+}
+
+.careerRecordLabel {
+  font-size: var(--fontSizeXs);
+  font-weight: var(--fontWeightNormal);
+  color: var(--colorDrfGray700);
+  line-height: 16px;
+}
+
+.careerRecordLabelSmall {
+  font-size: 10px;
+}
+
+.careerRecordValue {
+  display: flex;
+  align-items: center;
+  gap: var(--space1);
+  font-weight: var(--fontWeightMedium);
+  color: var(--colorDrfDarkBlue);
+  padding: 2px 0;
+}
+
+.careerRecordRaces {
+  font-size: 1rem;
+  line-height: 24px;
+}
+
+.careerRecordWinPlaceShow {
+  font-size: var(--fontSizeXs);
+  line-height: 20px;
+}
+
+/* Horse Form */
+.horseFormSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space2);
+  padding-left: var(--space4);
+  padding-right: var(--space3);
+}
+
+.horseFormTitle {
+  font-size: var(--fontSizeSm);
+  font-weight: var(--fontWeightMedium);
+  color: var(--colorDrfGray700);
+  line-height: 20px;
+}
+
+.formTable {
+  width: 100%;
+  font-size: var(--fontSizeXs);
+}
+
+.formHeader {
+  display: grid;
+  grid-template-columns: 45px 66px 61px 53px 1fr;
+  gap: var(--space1);
+  align-items: center;
+  padding-bottom: var(--space1);
+}
+
+.formHeaderCell {
+  display: flex;
+  align-items: center;
+  gap: var(--space1);
+  font-size: 11px;
+  font-weight: var(--fontWeightNormal);
+  color: var(--colorDrfGray400);
+  line-height: 14px;
+}
+
+.formHeaderCellFinish {
+  justify-content: flex-end;
+}
+
+.sortIcon {
+  width: 16px;
+  height: 18px;
+  color: var(--colorDrfGray400);
+  flex-shrink: 0;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 45px 66px 61px 53px 1fr;
+  gap: var(--space1);
+  align-items: center;
+  line-height: 16px;
+}
+
+.formCell {
+  font-weight: var(--fontWeightNormal);
+  color: var(--colorDrfGray700);
+}
+
+.formCellDistance {
+  font-weight: var(--fontWeightMedium);
+  color: var(--colorDrfGray800);
+  text-align: center;
+}
+
+.formCellSurface {
+  font-weight: var(--fontWeightMedium);
+  text-align: center;
+}
+
+.formCellRating {
+  font-weight: var(--fontWeightBold);
+  color: var(--colorTextStrong);
+  text-align: center;
+}
+
+.formCellFinish {
+  font-weight: var(--fontWeightMedium);
+  color: var(--colorDrfGray800);
+  text-align: right;
+}
+
+.surfaceTurf { color: var(--colorDrfTurf); }
+.surfaceSynthetic { color: var(--colorDrfSynthetic); }
+.surfaceDirt { color: var(--colorDrfDirt); }
+
+/* Rating section: Spotlight + Running Style */
+.ratingSection {
+  display: flex;
+  gap: var(--space3);
+  align-items: center;
+  padding-left: var(--space4);
+  padding-right: var(--space3);
+}
+
+.spotlightBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 17px;
+  min-width: 110px;
+}
+
+.spotlightTitle {
+  font-size: var(--fontSizeSm);
+  font-weight: var(--fontWeightNormal);
+  color: var(--colorDrfGray700);
+  line-height: 20px;
+  margin-bottom: var(--space2);
+}
+
+.spotlightCircle {
+  position: relative;
+  width: 82px;
+  height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--colorDrfDarkBlue) 0deg var(--spotlight-fill-deg, 270deg),
+    var(--colorDrfBorder) var(--spotlight-fill-deg, 270deg) 360deg
+  );
+}
+
+.spotlightCircle::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: var(--colorSurface);
+}
+
+.spotlightValue {
+  position: relative;
+  z-index: 1;
+  font-size: var(--fontSize3xl);
+  font-weight: var(--fontWeightBold);
+  line-height: 40px;
+  color: var(--colorDrfDarkBlue);
+}
+
+.ratingSectionDivider {
+  width: 1px;
+  height: 100%;
+  min-height: 120px;
+  background: var(--colorDrfBorder);
+  border-radius: var(--radiusSm);
+  flex-shrink: 0;
+}
+
+.runningStyleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space3);
+  flex: 1;
+  min-width: 0;
+  max-width: 180px;
+}
+
+.runningStyleHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space2);
+  padding: 2px var(--space4);
+  border-radius: var(--radiusXs);
+  background: var(--colorDrfBgSubtle);
+  font-size: var(--fontSizeSm);
+}
+
+.runningStyleLabel {
+  font-weight: var(--fontWeightNormal);
+  color: var(--colorDrfGray700);
+}
+
+.runningStyleValue {
+  font-weight: var(--fontWeightSemibold);
+  color: var(--colorDrfDarkBlue);
+}
+
+.paceRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space2);
+}
+
+.paceLabelRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  font-size: var(--fontSizeXs);
+}
+
+.paceLabel {
+  font-weight: var(--fontWeightNormal);
+  color: var(--colorDrfGray700);
+  line-height: 16px;
+}
+
+.paceValue {
+  font-weight: var(--fontWeightSemibold);
+  color: var(--colorDrfDarkBlue);
+  width: 24px;
+  text-align: right;
+}
+
+.paceBarTrack {
+  width: 100%;
+  height: 8px;
+  border-radius: var(--radiusFull);
+  background: var(--colorDrfBgTrack);
+  overflow: hidden;
+}
+
+.paceBarFill {
+  height: 100%;
+  border-radius: var(--radiusFull);
+  background: var(--colorDrfDarkBlue);
+  transition: width var(--transitionBase);
+}
