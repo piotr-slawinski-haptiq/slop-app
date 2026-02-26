@@ -1,4 +1,4 @@
-:global(:root) {
+:root {
   /* ── Brand ── */
   --colorPrimary: #f8cb46;
   --colorPrimaryHover: #f5c032;
