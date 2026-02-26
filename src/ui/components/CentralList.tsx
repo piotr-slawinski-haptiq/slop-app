@@ -13,6 +13,7 @@ type CentralListProps = {
     requesterEmail: string
   }>
   thresholdLabel: string
+  thresholdProgress: number
   canFulfill: boolean
   isScattering: boolean
   onCancel: (requestId: number) => void | Promise<void>
@@ -23,6 +24,7 @@ type CentralListProps = {
 export function CentralList({
   entries,
   thresholdLabel,
+  thresholdProgress,
   canFulfill,
   isScattering,
   onCancel,
@@ -54,51 +56,101 @@ export function CentralList({
 
   return (
     <section
-      className={[styles.panel, isDropActive ? styles.dropTarget : ''].join(' ')}
+      className={[styles.panel, isDropActive ? styles.dropTarget : ''].join(
+        ' ',
+      )}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
     >
-      <header className={styles.headingRow}>
-        <div>
-          <h2 className={styles.title}>Current order list</h2>
-          <p className={styles.subTitle}>One shared list for everyone</p>
+      <header className={styles.header}>
+        <div className={styles.headerLeft}>
+          <div className={styles.headerIcon}>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+              <rect x="9" y="3" width="6" height="4" rx="1" />
+            </svg>
+          </div>
+          <div className={styles.titleGroup}>
+            <h2 className={styles.title}>Order List</h2>
+            <p className={styles.subTitle}>Shared office shopping list</p>
+          </div>
         </div>
+        {entries.length > 0 && (
+          <span className={styles.countBadge}>{entries.length}</span>
+        )}
       </header>
 
-      {entries.length ? (
-        <ul className={styles.list}>
-          {entries.map((entry) => (
-            <li
-              key={entry.id}
-              className={styles.row}
-              style={isScattering ? { animation: 'none' } : undefined}
-            >
-              <div>
-                <p className={styles.rowName}>{entry.itemName}</p>
-                <p className={styles.rowMeta}>
-                  {entry.itemCategory} · added by {entry.requesterEmail}
-                </p>
-              </div>
-              <Button
-                variant="ghost"
-                size="small"
-                onClick={() => onCancel(entry.id)}
+      <div className={styles.body}>
+        {entries.length ? (
+          <ul className={styles.list}>
+            {entries.map((entry) => (
+              <li
+                key={entry.id}
+                className={styles.row}
+                style={isScattering ? { animation: 'none' } : undefined}
               >
-                Cancel
-              </Button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className={styles.empty}>
-          The list is empty. Add an item from a card or drop it here.
-        </p>
-      )}
+                <span className={styles.rowDot} />
+                <div className={styles.rowContent}>
+                  <p className={styles.rowName}>{entry.itemName}</p>
+                  <p className={styles.rowMeta}>
+                    {entry.itemCategory} · {entry.requesterEmail}
+                  </p>
+                </div>
+                <div className={styles.cancelBtn}>
+                  <Button
+                    variant="ghost"
+                    size="small"
+                    onClick={() => onCancel(entry.id)}
+                  >
+                    ✕
+                  </Button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div>
+            <svg
+              className={styles.emptyIcon}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            >
+              <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+              <rect x="9" y="3" width="6" height="4" rx="1" />
+              <line x1="12" y1="11" x2="12" y2="17" />
+              <line x1="9" y1="14" x2="15" y2="14" />
+            </svg>
+            <p className={styles.empty}>
+              The list is empty. Search for an item or drag a product card here
+              to get started.
+            </p>
+          </div>
+        )}
+      </div>
 
       <footer className={styles.footer}>
-        <p className={styles.threshold}>{thresholdLabel}</p>
-        {canFulfill ? (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <p className={styles.threshold}>{thresholdLabel}</p>
+          <div className={styles.thresholdBar}>
+            <div
+              className={styles.thresholdFill}
+              style={{
+                width: `${Math.min(thresholdProgress * 100, 100)}%`,
+              }}
+            />
+          </div>
+        </div>
+        {canFulfill && entries.length > 0 ? (
           <Button onClick={onFulfill}>Mark as ordered</Button>
         ) : null}
       </footer>

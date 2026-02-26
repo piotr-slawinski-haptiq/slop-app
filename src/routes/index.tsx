@@ -119,16 +119,16 @@ function DashboardPage() {
     }
 
     if (result.alreadyOnList) {
-      setInfoMessage('Item already exists on the shared list.')
+      setInfoMessage('Item already on the list.')
       return
     }
 
     if (result.trigger === 'immediate') {
-      setInfoMessage('Staple added - order now notification sent.')
+      setInfoMessage('Staple item added — order notification sent!')
     } else if (result.trigger === 'threshold') {
-      setInfoMessage('Threshold reached - place order notification sent.')
+      setInfoMessage('Threshold reached — time to place an order!')
     } else {
-      setInfoMessage('Item added to the shared list.')
+      setInfoMessage('Item added to the list.')
     }
   }
 
@@ -138,7 +138,7 @@ function DashboardPage() {
         cancelRequestFn({
           data: { requestId },
         }),
-      'Request removed from the list.',
+      'Removed from list.',
     )
   }
 
@@ -183,7 +183,7 @@ function DashboardPage() {
         deleteItemFn({
           data: { itemId },
         }),
-      'Catalog item deleted.',
+      'Item deleted from catalog.',
     )
   }
 
@@ -225,7 +225,7 @@ function DashboardPage() {
 
     const result = await withFeedback(
       () => fulfillCurrentListFn(),
-      'List fulfilled and moved to order history.',
+      'Order fulfilled! List cleared.',
     )
 
     if (!result) {
@@ -251,153 +251,215 @@ function DashboardPage() {
     await navigate({ to: '/login' })
   }
 
-  const thresholdLabel = `${data.threshold.currentDistinctItems} / ${data.threshold.minPendingItems} items · ${data.threshold.remainingUntilThreshold} until threshold`
+  const thresholdProgress =
+    data.threshold.minPendingItems > 0
+      ? data.threshold.currentDistinctItems / data.threshold.minPendingItems
+      : 0
+
+  const thresholdLabel = `${data.threshold.currentDistinctItems} of ${data.threshold.minPendingItems} items`
 
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
+      {/* ── Sticky top bar ── */}
       <header className={styles.topBar}>
-        <div className={styles.titleWrap}>
-          <h1 className={styles.title}>SLOP</h1>
-          <p className={styles.subTitle}>
-            Shopping List Ordering Platform · single shared office list
-          </p>
+        <div className={styles.brand}>
+          <h1 className={styles.brandName}>SLOP</h1>
+          <p className={styles.brandTag}>Shopping List Ordering Platform</p>
         </div>
-        <div className={styles.inlineForm}>
-          <span className={styles.chip}>
-            {currentUser.email} · {currentUser.role}
+        <div className={styles.topBarRight}>
+          <span className={styles.userChip}>
+            {currentUser.email}
+            <span className={styles.roleBadge}>{currentUser.role}</span>
           </span>
-          <Button onClick={onSignOut} variant="secondary">
+          <button className={styles.signOutBtn} onClick={onSignOut}>
             Sign out
-          </Button>
+          </button>
         </div>
       </header>
 
-      <Omnisearch
-        items={data.items}
-        canCreate={isOrderer}
-        onAddExisting={onAddRequest}
-        onCreateItem={onCreateFromSearch}
-      />
+      {/* ── Search strip ── */}
+      <div className={styles.searchStrip}>
+        <div className={styles.searchInner}>
+          <Omnisearch
+            items={data.items}
+            canCreate={isOrderer}
+            onAddExisting={onAddRequest}
+            onCreateItem={onCreateFromSearch}
+          />
+        </div>
+      </div>
 
-      {errorMessage ? <p className={styles.error}>{errorMessage}</p> : null}
-      {infoMessage ? <p>{infoMessage}</p> : null}
+      {/* ── Feedback messages ── */}
+      {(errorMessage || infoMessage) && (
+        <div className={styles.feedback}>
+          {errorMessage ? (
+            <p className={styles.error}>{errorMessage}</p>
+          ) : null}
+          {infoMessage ? <p className={styles.info}>{infoMessage}</p> : null}
+        </div>
+      )}
 
-      <section className={styles.canvas}>
-        <CentralList
-          entries={data.currentList}
-          thresholdLabel={thresholdLabel}
-          canFulfill={isOrderer}
-          onCancel={onCancelRequest}
-          onDropAdd={onAddRequest}
-          onFulfill={onFulfill}
-          isScattering={isScattering}
-        />
+      {/* ── Main content area ── */}
+      <main className={styles.main}>
+        <div className={styles.canvas}>
+          <CentralList
+            entries={data.currentList}
+            thresholdLabel={thresholdLabel}
+            thresholdProgress={thresholdProgress}
+            canFulfill={isOrderer}
+            onCancel={onCancelRequest}
+            onDropAdd={onAddRequest}
+            onFulfill={onFulfill}
+            isScattering={isScattering}
+          />
 
-        <section className={styles.productsSection}>
-          <h2 className={styles.sectionHeading}>Product cards</h2>
-          <div
-            className={[
-              styles.productGrid,
-              isScattering ? styles.productScatter : '',
-            ].join(' ')}
-          >
-            {data.items.map((item) => (
-              <ProductCard key={item.id} item={item} onAdd={onAddRequest} />
-            ))}
-          </div>
-        </section>
-      </section>
+          <section className={styles.productsSection}>
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionHeading}>Products</h2>
+              <span className={styles.sectionCount}>
+                {data.items.length} items in catalog
+              </span>
+            </div>
+            <div
+              className={[
+                styles.productGrid,
+                isScattering ? styles.productScatter : '',
+              ].join(' ')}
+            >
+              {data.items.map((item) => (
+                <ProductCard key={item.id} item={item} onAdd={onAddRequest} />
+              ))}
+            </div>
+          </section>
+        </div>
+      </main>
 
+      {/* ── Admin panel (orderer only) ── */}
       {isOrderer ? (
-        <section className={styles.adminPanel}>
-          <div className={styles.adminColumns}>
-            <section className={styles.adminSection}>
-              <h2 className={styles.adminTitle}>Notifications</h2>
-              <NotificationTray
-                notifications={data.notifications}
-                onDismiss={onDismissNotification}
-              />
-            </section>
-
-            <section className={styles.adminSection}>
-              <h2 className={styles.adminTitle}>Catalog management</h2>
-              <div className={styles.inlineForm}>
-                <Input
-                  value={itemName}
-                  placeholder="New item name"
-                  onChange={(event) => setItemName(event.target.value)}
-                />
-                <Input
-                  value={itemCategory}
-                  placeholder="Category"
-                  onChange={(event) => setItemCategory(event.target.value)}
-                />
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={isEvergreen}
-                    onChange={(event) => setIsEvergreen(event.target.checked)}
-                  />{' '}
-                  Staple
-                </label>
-                <Button onClick={onCreateItem}>Save item</Button>
+        <div className={styles.adminPanel}>
+          <hr className={styles.adminDivider} />
+          <div className={styles.adminGrid}>
+            {/* Notifications */}
+            <div className={styles.adminCard}>
+              <div className={styles.adminCardHeader}>
+                <h2 className={styles.adminCardTitle}>Notifications</h2>
               </div>
-              <ul className={styles.itemsList}>
-                {data.items.map((item) => (
-                  <li key={item.id} className={styles.itemRow}>
-                    <span>
-                      {item.name} · {item.category}{' '}
-                      {item.isEvergreen ? '(Staple)' : ''}
-                    </span>
-                    <div className={styles.inlineForm}>
-                      <Button
-                        variant="ghost"
-                        size="small"
-                        onClick={() => onToggleEvergreen(item)}
-                      >
-                        Toggle staple
-                      </Button>
-                      <Button
-                        variant="danger"
-                        size="small"
-                        onClick={() => onDeleteItem(item.id)}
-                      >
-                        Delete
-                      </Button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </section>
-
-            <section className={styles.adminSection}>
-              <h2 className={styles.adminTitle}>Threshold</h2>
-              <div className={styles.inlineForm}>
-                <Input
-                  type="number"
-                  min={1}
-                  value={thresholdInput}
-                  onChange={(event) => setThresholdInput(event.target.value)}
+              <div style={{ padding: 0 }}>
+                <NotificationTray
+                  notifications={data.notifications}
+                  onDismiss={onDismissNotification}
                 />
-                <Button onClick={onUpdateThreshold}>Update threshold</Button>
               </div>
-            </section>
+            </div>
 
-            <section className={styles.adminSection}>
-              <h2 className={styles.adminTitle}>Past orders</h2>
+            {/* Catalog management */}
+            <div className={styles.adminCard}>
+              <div className={styles.adminCardHeader}>
+                <h2 className={styles.adminCardTitle}>Catalog</h2>
+              </div>
+              <div className={styles.adminCardBody}>
+                <div className={styles.catalogForm}>
+                  <div className={styles.catalogFormField}>
+                    <span className={styles.fieldLabel}>Name</span>
+                    <Input
+                      value={itemName}
+                      placeholder="Item name"
+                      onChange={(event) => setItemName(event.target.value)}
+                    />
+                  </div>
+                  <div className={styles.catalogFormField}>
+                    <span className={styles.fieldLabel}>Category</span>
+                    <Input
+                      value={itemCategory}
+                      placeholder="Category"
+                      onChange={(event) => setItemCategory(event.target.value)}
+                    />
+                  </div>
+                  <label className={styles.checkboxLabel}>
+                    <input
+                      type="checkbox"
+                      checked={isEvergreen}
+                      onChange={(event) => setIsEvergreen(event.target.checked)}
+                    />
+                    Staple
+                  </label>
+                  <Button onClick={onCreateItem} size="small">
+                    Save
+                  </Button>
+                </div>
+                <ul className={styles.itemsList}>
+                  {data.items.map((item) => (
+                    <li key={item.id} className={styles.itemRow}>
+                      <div className={styles.itemInfo}>
+                        <span className={styles.itemName}>{item.name}</span>
+                        <span className={styles.itemCat}>{item.category}</span>
+                        {item.isEvergreen && (
+                          <span className={styles.itemBadge}>STAPLE</span>
+                        )}
+                      </div>
+                      <div className={styles.itemActions}>
+                        <Button
+                          variant="ghost"
+                          size="small"
+                          onClick={() => onToggleEvergreen(item)}
+                        >
+                          {item.isEvergreen ? 'Unmark' : 'Mark staple'}
+                        </Button>
+                        <Button
+                          variant="danger"
+                          size="small"
+                          onClick={() => onDeleteItem(item.id)}
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Threshold */}
+            <div className={styles.adminCard}>
+              <div className={styles.adminCardHeader}>
+                <h2 className={styles.adminCardTitle}>Fulfillment Threshold</h2>
+              </div>
+              <div className={styles.adminCardBody}>
+                <p style={{ margin: 0, fontSize: 'var(--fontSizeSm)', color: 'var(--colorTextMuted)' }}>
+                  Notify orderer when distinct items on the list reach this number.
+                </p>
+                <div className={styles.thresholdForm}>
+                  <div className={styles.thresholdField}>
+                    <Input
+                      type="number"
+                      min={1}
+                      value={thresholdInput}
+                      onChange={(event) => setThresholdInput(event.target.value)}
+                    />
+                  </div>
+                  <Button onClick={onUpdateThreshold} size="small">
+                    Update
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Past orders */}
+            <div className={styles.adminCard}>
+              <div className={styles.adminCardHeader}>
+                <h2 className={styles.adminCardTitle}>Order History</h2>
+              </div>
               {data.pastFulfillments.length ? (
                 <ul className={styles.historyList}>
                   {data.pastFulfillments.map((fulfillment) => (
                     <li key={fulfillment.id} className={styles.historyRow}>
                       <p className={styles.historyTitle}>
-                        Fulfillment #{fulfillment.id}
+                        Order #{fulfillment.id}
                       </p>
                       <p className={styles.historyMeta}>
-                        Trigger: {fulfillment.trigger} · Fulfilled at:{' '}
-                        {formatDate(fulfillment.fulfilledAt)}
+                        {fulfillment.trigger} · {formatDate(fulfillment.fulfilledAt)}
                       </p>
                       <p className={styles.historyMeta}>
-                        Items:{' '}
                         {fulfillment.requests
                           .map((request) => request.itemName)
                           .join(', ')}
@@ -406,12 +468,12 @@ function DashboardPage() {
                   ))}
                 </ul>
               ) : (
-                <p className={styles.historyMeta}>No past fulfillments yet.</p>
+                <p className={styles.historyEmpty}>No past orders yet.</p>
               )}
-            </section>
+            </div>
           </div>
-        </section>
+        </div>
       ) : null}
-    </main>
+    </div>
   )
 }

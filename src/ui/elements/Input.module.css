@@ -1,16 +1,31 @@
 .input {
   width: 100%;
   border: 1px solid var(--colorBorder);
-  border-radius: var(--radiusMd);
-  padding: 10px 12px;
-  font-size: var(--fontSizeBase);
+  border-radius: var(--radiusSm);
+  padding: 10px 14px;
+  font-size: var(--fontSizeSm);
+  font-weight: var(--fontWeightNormal);
   color: var(--colorTextStrong);
   background: var(--colorSurface);
-  transition: border-color 120ms ease;
+  transition:
+    border-color var(--transitionFast),
+    box-shadow var(--transitionFast),
+    background-color var(--transitionFast);
+  min-height: 40px;
+}
+
+.input::placeholder {
+  color: var(--colorTextMuted);
+  font-weight: var(--fontWeightNormal);
+}
+
+.input:hover {
+  border-color: var(--colorBorderStrong);
 }
 
 .input:focus {
   outline: none;
-  border-color: #c7aa00;
-  box-shadow: 0 0 0 3px rgba(255, 222, 3, 0.25);
+  border-color: var(--colorBorderFocus);
+  box-shadow: var(--shadowFocus);
+  background: var(--colorSurface);
 }

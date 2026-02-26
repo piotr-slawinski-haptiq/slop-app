@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
 
 import { Button } from '@/ui/elements/Button'
-import { Input } from '@/ui/elements/Input'
 
 import styles from './Omnisearch.module.css'
 
@@ -58,43 +57,68 @@ export function Omnisearch({
 
   return (
     <div className={styles.shell}>
-      <Input
-        value={query}
-        onChange={(event) => {
-          setQuery(event.target.value)
-          setIsOpen(true)
-        }}
-        onFocus={() => setIsOpen(true)}
-        onBlur={() => setTimeout(() => setIsOpen(false), 120)}
-        placeholder="Search products or create one…"
-      />
+      <div className={styles.searchWrap}>
+        <svg
+          className={styles.searchIcon}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <input
+          className={styles.searchInput}
+          value={query}
+          onChange={(event) => {
+            setQuery(event.target.value)
+            setIsOpen(true)
+          }}
+          onFocus={() => setIsOpen(true)}
+          onBlur={() => setTimeout(() => setIsOpen(false), 150)}
+          placeholder="Search for an item or create a new one…"
+        />
+      </div>
+
       {isOpen && normalized ? (
         <div className={styles.results}>
           {matches.length ? (
             matches.map((item) => (
               <button
                 key={item.id}
-                className={styles.resultButton}
+                className={styles.resultItem}
                 onClick={() => addAndReset(item.id)}
                 type="button"
               >
-                {item.name} · {item.category}
+                <span>
+                  <span className={styles.resultItemName}>{item.name}</span>
+                  <span className={styles.resultItemDot}> · </span>
+                  <span className={styles.resultItemCategory}>
+                    {item.category}
+                  </span>
+                </span>
               </button>
             ))
           ) : (
             <p className={styles.emptyHint}>
-              No item found. {canCreate ? 'Create it from this search.' : ''}
+              No matching item found.
+              {canCreate ? ' You can create it below.' : ''}
             </p>
           )}
           {canCreate && normalized ? (
-            <Button
-              type="button"
-              variant="secondary"
-              size="small"
-              onClick={createAndReset}
-            >
-              Create “{query.trim()}”
-            </Button>
+            <div className={styles.createRow}>
+              <Button
+                type="button"
+                variant="green"
+                size="small"
+                onClick={createAndReset}
+              >
+                + Create "{query.trim()}"
+              </Button>
+            </div>
           ) : null}
         </div>
       ) : null}

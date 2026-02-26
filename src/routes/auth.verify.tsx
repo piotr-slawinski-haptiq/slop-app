@@ -2,6 +2,8 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { verifyMagicLink } from '@/lib/auth/magic-link.server'
 
+import styles from './auth.verify.module.css'
+
 function redirectResponse(to: string): Response {
   return new Response(null, {
     status: 307,
@@ -36,5 +38,10 @@ export const Route = createFileRoute('/auth/verify')({
 })
 
 function VerifyRouteComponent() {
-  return <p>Verifying magic link…</p>
+  return (
+    <main className={styles.page}>
+      <div className={styles.spinner} />
+      <p className={styles.text}>Verifying your magic link…</p>
+    </main>
+  )
 }
