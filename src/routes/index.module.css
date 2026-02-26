@@ -229,10 +229,21 @@
 }
 
 .adminGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: var(--space5);
-  align-items: start;
+  column-count: 3;
+  column-gap: var(--space5);
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .adminGrid {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .adminGrid {
+    column-count: 1;
+  }
 }
 
 .adminCard {
@@ -241,6 +252,10 @@
   border-radius: var(--radiusMd);
   box-shadow: var(--shadowXs);
   overflow: hidden;
+  break-inside: avoid;
+  margin-bottom: var(--space5);
+  display: inline-block;
+  width: 100%;
 }
 
 .adminCardHeader {
