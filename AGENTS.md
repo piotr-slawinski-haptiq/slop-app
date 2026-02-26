@@ -99,7 +99,8 @@ SLOP is a single shared office shopping list app. Colleagues add items they need
 │   │   ├── slop-ux-and-ui.mdc
 │   │   ├── slop-design-system.mdc
 │   │   ├── slop-styling.mdc
-│   │   └── context7-technical.mdc
+│   │   ├── context7-technical.mdc
+│   │   └── frontend-screenshot-policy.mdc
 │   └── skills/                  # Reusable agent skills (general purpose)
 │
 └── docs/                        # Additional documentation
@@ -305,6 +306,10 @@ Run all: `bun test` (requires `DATABASE_URL` to point to a running PostgreSQL).
 2. Ensure `.env.local` exists with valid `DATABASE_URL`
 3. Run `bun install && bun run db:migrate`
 4. Build: `bun run build` | Dev: `bun run dev` | Test: `bun test`
+
+## PR Screenshot Policy
+
+Any PR that touches frontend code (`.tsx`, `.jsx`, `.module.css`, design tokens, assets, or layout) **must include screenshots** (or GIFs for animations) in the PR description showing the visual result. Use before/after for modifications. Pure refactors with zero visual change may state "No visual change" instead. See `.cursor/rules/frontend-screenshot-policy.mdc` for full details.
 
 ## Scope (MVP)
 

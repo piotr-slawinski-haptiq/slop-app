@@ -1,0 +1,35 @@
+---
+description: Require screenshots in PRs that touch frontend code (markup, styling, UI components)
+alwaysApply: true
+---
+
+# Frontend Screenshot Policy
+
+Any pull request that includes **frontend changes** must contain at least one **screenshot** (or screen recording / GIF for animations) in the PR description showing the visual result of the change.
+
+## What counts as a frontend change
+
+A PR is considered frontend-related if it modifies any of the following:
+
+- **Markup / JSX** – `.tsx`, `.jsx` files under `src/routes/`, `src/ui/`, or any component directory.
+- **Styles** – `.module.css`, `.css`, or any styling-related file.
+- **Design tokens** – Changes to `tokens.module.css` or other shared style constants.
+- **Assets** – Images, icons, fonts, or other visual assets.
+- **Layout or UX changes** – Route-level layout shifts, new pages, component reordering, responsive behavior.
+
+## What to include
+
+- **Before / after screenshots** when modifying existing UI (side-by-side or stacked).
+- **Single screenshot** for new UI that did not exist before.
+- **GIF or short video** for animations, transitions, or interactive behavior (e.g. the scatter-on-fulfill animation).
+- Screenshots should show the **relevant viewport** (desktop; mobile if responsive changes are involved).
+
+## Where to put them
+
+- Embed directly in the **PR description body** using markdown image syntax (`![description](url)`).
+- If the PR is created by an automated tool or CI, the agent/author must add screenshots before requesting review.
+
+## Exceptions
+
+- Pure refactors with **zero visual change** (e.g. renaming CSS class internals, extracting a component with identical output) may skip screenshots but should explicitly state "No visual change" in the PR description.
+- Backend-only PRs (API, DB, server logic) that do not touch any of the file types above are exempt.
