@@ -1,43 +1,103 @@
 .panel {
-  border: 1px solid var(--colorBorder);
-  border-radius: var(--radiusLg);
-  background: var(--colorSurface);
-  box-shadow: var(--shadowCard);
-  padding: var(--space4);
-  display: grid;
-  gap: var(--space2);
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space4) var(--space4) var(--space3);
 }
 
 .title {
   margin: 0;
-  font-size: var(--fontSizeLg);
+  font-size: var(--fontSizeSm);
+  font-weight: var(--fontWeightBold);
   color: var(--colorTextStrong);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge {
+  background: var(--colorDanger);
+  color: var(--colorTextInverse);
+  font-size: var(--fontSizeXs);
+  font-weight: var(--fontWeightBold);
+  padding: 2px 7px;
+  border-radius: var(--radiusFull);
+  min-width: 20px;
+  text-align: center;
 }
 
 .list {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  gap: var(--space2);
 }
 
 .item {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: var(--space2);
-  border: 1px solid var(--colorBorder);
-  border-radius: var(--radiusMd);
-  padding: 10px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space3);
+  padding: var(--space3) var(--space4);
+  border-top: 1px solid var(--colorBorder);
+  transition: background-color var(--transitionFast);
+}
+
+.item:hover {
+  background: var(--colorSurfaceSubtle);
+}
+
+.itemIcon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radiusFull);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fontSizeSm);
+  margin-top: 2px;
+}
+
+.itemIconImmediate {
+  background: var(--colorWarningLight);
+  color: var(--colorWarning);
+}
+
+.itemIconThreshold {
+  background: var(--colorAccentGreenLight);
+  color: var(--colorAccentGreen);
+}
+
+.itemContent {
+  flex: 1;
+  min-width: 0;
 }
 
 .message {
   margin: 0;
+  font-size: var(--fontSizeSm);
   color: var(--colorTextStrong);
+  font-weight: var(--fontWeightMedium);
+  line-height: var(--lineHeightBase);
 }
 
 .meta {
   margin: 0;
-  font-size: var(--fontSizeSm);
+  font-size: var(--fontSizeXs);
   color: var(--colorTextMuted);
+  line-height: var(--lineHeightBase);
+}
+
+.dismiss {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.emptyState {
+  padding: var(--space6) var(--space4);
+  text-align: center;
+  color: var(--colorTextMuted);
+  font-size: var(--fontSizeSm);
 }

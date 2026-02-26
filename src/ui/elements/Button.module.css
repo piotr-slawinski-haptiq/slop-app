@@ -1,69 +1,118 @@
 .button {
-  border: 1px solid transparent;
-  border-radius: var(--radiusMd);
+  border: none;
+  border-radius: var(--radiusSm);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
+  gap: var(--space2);
+  font-weight: var(--fontWeightSemibold);
+  letter-spacing: var(--letterSpacingNormal);
+  white-space: nowrap;
+  user-select: none;
   transition:
-    background-color 140ms ease,
-    color 140ms ease,
-    border-color 140ms ease,
-    transform 120ms ease;
+    background-color var(--transitionFast),
+    color var(--transitionFast),
+    box-shadow var(--transitionFast),
+    transform var(--transitionFast);
+}
+
+.button:focus-visible {
+  outline: none;
+  box-shadow: var(--shadowFocus);
 }
 
 .button:disabled {
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .button:not(:disabled):active {
-  transform: translateY(1px);
+  transform: scale(0.97);
 }
 
+/* ── Sizes ── */
+
 .sizeSmall {
-  padding: 8px 12px;
-  font-size: var(--fontSizeSm);
+  padding: 6px 12px;
+  font-size: var(--fontSizeXs);
+  border-radius: var(--radiusXs);
+  min-height: 32px;
 }
 
 .sizeMedium {
-  padding: 10px 16px;
-  font-size: var(--fontSizeBase);
+  padding: 10px 20px;
+  font-size: var(--fontSizeSm);
+  min-height: 40px;
 }
+
+/* ── Primary (yellow brand – Blinkit-style CTA) ── */
 
 .primary {
   background: var(--colorPrimary);
-  border-color: var(--colorPrimary);
   color: var(--colorTextStrong);
+  box-shadow: var(--shadowXs);
 }
 
 .primary:hover:not(:disabled) {
   background: var(--colorPrimaryHover);
-  border-color: var(--colorPrimaryHover);
+  box-shadow: var(--shadowSm);
 }
+
+.primary:active:not(:disabled) {
+  background: var(--colorPrimaryActive);
+}
+
+/* ── Secondary ── */
 
 .secondary {
   background: var(--colorSurface);
-  border-color: var(--colorBorder);
   color: var(--colorTextStrong);
+  box-shadow: inset 0 0 0 1px var(--colorBorder);
 }
 
 .secondary:hover:not(:disabled) {
-  border-color: #d2d2d2;
+  background: var(--colorSurfaceSubtle);
+  box-shadow: inset 0 0 0 1px var(--colorBorderStrong);
 }
+
+/* ── Ghost ── */
 
 .ghost {
   background: transparent;
-  color: var(--colorTextStrong);
+  color: var(--colorTextMuted);
 }
 
 .ghost:hover:not(:disabled) {
-  background: rgba(17, 17, 17, 0.06);
+  background: var(--colorSurfaceHover);
+  color: var(--colorTextStrong);
 }
 
+/* ── Danger ── */
+
 .danger {
-  background: #ffe8e8;
-  border-color: #ffcfcf;
+  background: var(--colorDangerLight);
   color: var(--colorDanger);
+}
+
+.danger:hover:not(:disabled) {
+  background: #fde3df;
+}
+
+/* ── Green (add-to-cart style – Blinkit's green add buttons) ── */
+
+.green {
+  background: var(--colorAccentGreen);
+  color: var(--colorTextInverse);
+  box-shadow: var(--shadowXs);
+}
+
+.green:hover:not(:disabled) {
+  background: var(--colorAccentGreenHover);
+  box-shadow: var(--shadowSm);
+}
+
+.green:focus-visible {
+  box-shadow: var(--shadowFocusGreen);
 }

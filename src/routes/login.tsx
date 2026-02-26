@@ -1,7 +1,10 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { useState } from 'react'
 
-import { requestMagicLinkFn, getCurrentUserFn } from '@/lib/server-fns/auth.functions'
+import {
+  requestMagicLinkFn,
+  getCurrentUserFn,
+} from '@/lib/server-fns/auth.functions'
 import { Button } from '@/ui/elements/Button'
 import { Input } from '@/ui/elements/Input'
 
@@ -47,7 +50,7 @@ function LoginPage() {
       })
 
       setStatusMessage(
-        'Magic link sent. Check your email and click the link to continue.',
+        'Magic link sent! Check your email and click the link to sign in.',
       )
       setPreviewUrl(result.previewUrl)
     } catch (error) {
@@ -59,40 +62,57 @@ function LoginPage() {
 
   return (
     <main className={styles.page}>
-      <section className={styles.card}>
-        <h1 className={styles.title}>Sign in to SLOP</h1>
-        <p className={styles.subtitle}>
-          Use your @haptiq.com email to request a secure magic link.
-        </p>
-        <form className={styles.form} onSubmit={onSubmit}>
-          <Input
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            type="email"
-            placeholder="you@haptiq.com"
-            required
-            autoComplete="email"
-          />
-          <div className={styles.actions}>
+      <div className={styles.brandBar}>
+        <h1 className={styles.brandTitle}>SLOP</h1>
+        <p className={styles.brandSub}>Shopping List Ordering Platform</p>
+      </div>
+
+      <div className={styles.content}>
+        <section className={styles.card}>
+          <div>
+            <h2 className={styles.title}>Sign in</h2>
+            <p className={styles.subtitle}>
+              Enter your @haptiq.com email to receive a secure magic link.
+            </p>
+          </div>
+
+          <form className={styles.form} onSubmit={onSubmit}>
+            <label className={styles.label}>
+              Email address
+              <Input
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                type="email"
+                placeholder="you@haptiq.com"
+                required
+                autoComplete="email"
+              />
+            </label>
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? 'Sending…' : 'Send magic link'}
             </Button>
-          </div>
-        </form>
-        <p className={styles.hint}>
-          Only users in the allowed domain can authenticate.
-        </p>
-        {errorMessage ? <p className={styles.error}>{errorMessage}</p> : null}
-        {statusMessage ? <p className={styles.success}>{statusMessage}</p> : null}
-        {previewUrl ? (
-          <p className={styles.success}>
-            Dev preview link:{' '}
-            <a href={previewUrl} className={styles.previewLink}>
-              {previewUrl}
-            </a>
+          </form>
+
+          <p className={styles.hint}>
+            Only @haptiq.com email addresses are allowed to sign in.
           </p>
-        ) : null}
-      </section>
+
+          {errorMessage ? (
+            <p className={styles.error}>{errorMessage}</p>
+          ) : null}
+          {statusMessage ? (
+            <p className={styles.success}>{statusMessage}</p>
+          ) : null}
+          {previewUrl ? (
+            <p className={styles.success}>
+              Dev preview:{' '}
+              <a href={previewUrl} className={styles.previewLink}>
+                Click here to verify
+              </a>
+            </p>
+          ) : null}
+        </section>
+      </div>
     </main>
   )
 }

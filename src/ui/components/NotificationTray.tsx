@@ -27,29 +27,47 @@ export function NotificationTray({
 }: NotificationTrayProps) {
   return (
     <section className={styles.panel}>
-      <h2 className={styles.title}>Order alerts</h2>
+      <div className={styles.header}>
+        <h2 className={styles.title}>Alerts</h2>
+        {notifications.length > 0 && (
+          <span className={styles.badge}>{notifications.length}</span>
+        )}
+      </div>
+
       {notifications.length ? (
         <ul className={styles.list}>
           {notifications.map((notification) => (
             <li key={notification.id} className={styles.item}>
-              <div>
+              <div
+                className={[
+                  styles.itemIcon,
+                  notification.type === 'immediate'
+                    ? styles.itemIconImmediate
+                    : styles.itemIconThreshold,
+                ].join(' ')}
+              >
+                {notification.type === 'immediate' ? '⚡' : '📦'}
+              </div>
+              <div className={styles.itemContent}>
                 <p className={styles.message}>{notification.message}</p>
                 <p className={styles.meta}>
-                  {notification.type} · {formatTimestamp(notification.createdAt)}
+                  {formatTimestamp(notification.createdAt)}
                 </p>
               </div>
-              <Button
-                variant="ghost"
-                size="small"
-                onClick={() => onDismiss(notification.id)}
-              >
-                Dismiss
-              </Button>
+              <div className={styles.dismiss}>
+                <Button
+                  variant="ghost"
+                  size="small"
+                  onClick={() => onDismiss(notification.id)}
+                >
+                  ✕
+                </Button>
+              </div>
             </li>
           ))}
         </ul>
       ) : (
-        <p className={styles.meta}>No unread notifications.</p>
+        <p className={styles.emptyState}>No unread alerts</p>
       )}
     </section>
   )
