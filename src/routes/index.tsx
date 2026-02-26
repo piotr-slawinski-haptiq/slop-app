@@ -4,7 +4,7 @@ import {
   useNavigate,
   useRouter,
 } from '@tanstack/react-router'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { getCurrentUserFn, logoutFn } from '@/lib/server-fns/auth.functions'
 import {
@@ -251,6 +251,16 @@ function DashboardPage() {
     await navigate({ to: '/login' })
   }
 
+  const onListItemIds = useMemo(
+    () => new Set(data.currentList.map((entry) => entry.itemId)),
+    [data.currentList],
+  )
+
+  const availableItems = useMemo(
+    () => data.items.filter((item) => !onListItemIds.has(item.id)),
+    [data.items, onListItemIds],
+  )
+
   const thresholdProgress =
     data.threshold.minPendingItems > 0
       ? data.threshold.currentDistinctItems / data.threshold.minPendingItems
@@ -281,7 +291,7 @@ function DashboardPage() {
       <div className={styles.searchStrip}>
         <div className={styles.searchInner}>
           <Omnisearch
-            items={data.items}
+            items={availableItems}
             canCreate={isOrderer}
             onAddExisting={onAddRequest}
             onCreateItem={onCreateFromSearch}
@@ -317,7 +327,7 @@ function DashboardPage() {
             <div className={styles.sectionHeader}>
               <h2 className={styles.sectionHeading}>Products</h2>
               <span className={styles.sectionCount}>
-                {data.items.length} items in catalog
+                {availableItems.length} available
               </span>
             </div>
             <div
@@ -326,7 +336,7 @@ function DashboardPage() {
                 isScattering ? styles.productScatter : '',
               ].join(' ')}
             >
-              {data.items.map((item) => (
+              {availableItems.map((item) => (
                 <ProductCard key={item.id} item={item} onAdd={onAddRequest} />
               ))}
             </div>
