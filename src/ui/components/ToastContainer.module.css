@@ -1,3 +1,4 @@
+/* ── Toast container (fixed viewport anchor) ── */
 .container {
   position: fixed;
   top: var(--space6);
@@ -5,24 +6,34 @@
   z-index: calc(var(--zModal) + 10);
   display: flex;
   flex-direction: column;
-  gap: 0;
   pointer-events: none;
-  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  width: 380px;
+  max-width: calc(100vw - var(--space8));
 }
 
-.container > * {
-  pointer-events: auto;
-  margin-bottom: var(--space3);
+/* ── Collapsible slot (smooth height transition) ── */
+.slot {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 200ms ease-out;
 }
 
-.container > *:last-child {
-  margin-bottom: 0;
+.slot[data-collapsed] {
+  grid-template-rows: 0fr;
 }
 
+.slotInner {
+  overflow: hidden;
+  padding-bottom: var(--space2);
+}
+
+/* ── Mobile: full-width with smaller insets ── */
 @media (max-width: 640px) {
   .container {
     top: var(--space4);
-    right: var(--space4);
-    left: var(--space4);
+    right: var(--space3);
+    left: var(--space3);
+    width: auto;
+    max-width: none;
   }
 }

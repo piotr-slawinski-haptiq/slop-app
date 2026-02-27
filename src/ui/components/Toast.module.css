@@ -1,106 +1,162 @@
+/* ── Toast ─────────────────────────────────────────────── */
 .toast {
+  position: relative;
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  align-items: center;
   gap: var(--space3);
-  padding: var(--space3) var(--space4);
+  padding: var(--space3) var(--space3) var(--space3) var(--space4);
+  background: var(--colorSurface);
   border-radius: var(--radiusMd);
-  box-shadow: var(--shadowLg);
-  min-width: 300px;
-  max-width: 420px;
-  font-size: var(--fontSizeSm);
-  font-weight: var(--fontWeightMedium);
-  transform: translateX(0) scale(1);
-  opacity: 1;
-  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:
+    var(--shadowLg),
+    0 0 0 1px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  pointer-events: auto;
+  will-change: transform, opacity;
+  animation: toastEnter 360ms cubic-bezier(0.21, 1.02, 0.73, 1);
 }
 
-.toast.entering {
-  animation: slideInBounce 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+.toast[data-exiting] {
+  animation: toastExit 220ms ease-in forwards;
 }
 
-.toast.exiting {
-  animation: slideOutFade 250ms cubic-bezier(0.4, 0, 1, 1) forwards;
-}
-
-@keyframes slideInBounce {
-  0% {
-    transform: translateX(calc(100% + 24px)) scale(0.95);
+@keyframes toastEnter {
+  from {
     opacity: 0;
+    transform: translateX(calc(100% + 24px));
   }
-  60% {
-    transform: translateX(-8px) scale(1.02);
+  to {
     opacity: 1;
-  }
-  100% {
-    transform: translateX(0) scale(1);
-    opacity: 1;
+    transform: translateX(0);
   }
 }
 
-@keyframes slideOutFade {
-  0% {
-    transform: translateX(0) scale(1);
+@keyframes toastExit {
+  from {
     opacity: 1;
-    max-height: 200px;
-    margin-bottom: var(--space3);
+    transform: translateX(0);
   }
-  40% {
-    transform: translateX(24px) scale(0.98);
-    opacity: 0.6;
-  }
-  100% {
-    transform: translateX(calc(100% + 24px)) scale(0.9);
+  to {
     opacity: 0;
-    max-height: 0;
-    margin-bottom: 0;
-    padding-top: 0;
-    padding-bottom: 0;
+    transform: translateX(calc(100% + 24px));
   }
 }
 
-.toast.success {
-  background: var(--colorAccentGreenLight);
-  color: var(--colorAccentGreen);
-  border: 1px solid var(--colorAccentGreen);
+/* ── Colored left accent ── */
+.toast::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 3px;
 }
 
-.toast.error {
-  background: var(--colorDangerLight);
-  color: var(--colorDanger);
-  border: 1px solid var(--colorDanger);
+.toast[data-variant='success']::before {
+  background: var(--colorAccentGreen);
 }
 
-.message {
-  margin: 0;
-  flex: 1;
-  line-height: var(--lineHeightBase);
+.toast[data-variant='error']::before {
+  background: var(--colorDanger);
 }
 
-.closeBtn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 24px;
-  line-height: 1;
-  padding: 0;
-  width: 20px;
-  height: 20px;
+/* ── Icon ── */
+.icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radiusFull);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: currentColor;
-  opacity: 0.6;
-  transition: opacity var(--transitionFast);
+  color: var(--colorTextInverse);
+}
+
+.toast[data-variant='success'] .icon {
+  background: var(--colorAccentGreen);
+}
+
+.toast[data-variant='error'] .icon {
+  background: var(--colorDanger);
+}
+
+/* ── Message ── */
+.message {
+  margin: 0;
+  flex: 1;
+  font-size: var(--fontSizeSm);
+  font-weight: var(--fontWeightMedium);
+  color: var(--colorTextDefault);
+  line-height: var(--lineHeightBase);
+}
+
+/* ── Dismiss button ── */
+.dismiss {
   flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radiusSm);
+  color: var(--colorTextMuted);
+  transition:
+    background var(--transitionFast),
+    color var(--transitionFast);
+  padding: 0;
 }
 
-.closeBtn:hover {
-  opacity: 1;
+.dismiss:hover {
+  background: var(--colorSurfaceHover);
+  color: var(--colorTextStrong);
 }
 
-.closeBtn:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
-  opacity: 1;
+.dismiss:focus-visible {
+  outline: 2px solid var(--colorBorderFocus);
+  outline-offset: -2px;
+}
+
+/* ── Progress bar ── */
+.progressTrack {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: transparent;
+}
+
+.progressBar {
+  height: 100%;
+  width: 100%;
+  transform-origin: right;
+  animation-name: progressShrink;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  animation-duration: 5000ms;
+  opacity: 0.25;
+}
+
+.toast[data-variant='success'] .progressBar {
+  background: var(--colorAccentGreen);
+}
+
+.toast[data-variant='error'] .progressBar {
+  background: var(--colorDanger);
+}
+
+.toast[data-paused] .progressBar {
+  animation-play-state: paused;
+}
+
+@keyframes progressShrink {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
 }
