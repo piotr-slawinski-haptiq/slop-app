@@ -6,8 +6,18 @@
   display: flex;
   flex-direction: column;
   min-height: 320px;
+  max-height: calc(100vh - 56px - var(--space5) * 2);
   overflow: hidden;
   transition: border-color var(--transitionBase);
+  position: sticky;
+  top: calc(56px + var(--space5));
+}
+
+@media (max-width: 900px) {
+  .panel {
+    position: static;
+    max-height: none;
+  }
 }
 
 .dropTarget {
@@ -23,6 +33,7 @@
   padding: var(--space5) var(--space5) var(--space4);
   border-bottom: 1px solid var(--colorBorder);
   background: var(--colorSurfaceSubtle);
+  flex-shrink: 0;
 }
 
 .headerLeft {
@@ -177,6 +188,7 @@
   padding: var(--space4) var(--space5);
   border-top: 1px solid var(--colorBorder);
   background: var(--colorSurfaceSubtle);
+  flex-shrink: 0;
 }
 
 .threshold {
