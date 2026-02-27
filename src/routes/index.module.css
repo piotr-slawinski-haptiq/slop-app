@@ -126,35 +126,6 @@
   margin: 0 auto;
 }
 
-/* ── Feedback messages ── */
-
-.feedback {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: var(--space3) var(--space6) 0;
-  width: 100%;
-}
-
-.error {
-  margin: 0;
-  color: var(--colorDanger);
-  font-size: var(--fontSizeSm);
-  font-weight: var(--fontWeightMedium);
-  padding: var(--space3) var(--space4);
-  background: var(--colorDangerLight);
-  border-radius: var(--radiusSm);
-}
-
-.info {
-  margin: 0;
-  color: var(--colorAccentGreen);
-  font-size: var(--fontSizeSm);
-  font-weight: var(--fontWeightMedium);
-  padding: var(--space3) var(--space4);
-  background: var(--colorAccentGreenLight);
-  border-radius: var(--radiusSm);
-}
-
 /* ── Main canvas ── */
 
 .main {

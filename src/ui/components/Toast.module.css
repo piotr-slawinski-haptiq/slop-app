@@ -1,0 +1,72 @@
+.toast {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space3);
+  padding: var(--space3) var(--space4);
+  border-radius: var(--radiusMd);
+  box-shadow: var(--shadowLg);
+  min-width: 300px;
+  max-width: 420px;
+  font-size: var(--fontSizeSm);
+  font-weight: var(--fontWeightMedium);
+  animation: slideIn 200ms ease-out;
+  transition: opacity var(--transitionBase), transform var(--transitionBase);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.toast.success {
+  background: var(--colorAccentGreenLight);
+  color: var(--colorAccentGreen);
+  border: 1px solid var(--colorAccentGreen);
+}
+
+.toast.error {
+  background: var(--colorDangerLight);
+  color: var(--colorDanger);
+  border: 1px solid var(--colorDanger);
+}
+
+.message {
+  margin: 0;
+  flex: 1;
+  line-height: var(--lineHeightBase);
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  line-height: 1;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+  opacity: 0.6;
+  transition: opacity var(--transitionFast);
+  flex-shrink: 0;
+}
+
+.closeBtn:hover {
+  opacity: 1;
+}
+
+.closeBtn:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+  opacity: 1;
+}
