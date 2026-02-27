@@ -15,7 +15,8 @@ interface ToastContainerProps {
   maxVisible?: number
 }
 
-const EXIT_ANIMATION_DURATION = 250
+/* Must match grid collapse + toast exit in CSS (both use --transitionBase ~200ms) */
+const EXIT_ANIMATION_DURATION = 220
 
 export function ToastContainer({
   toasts,
@@ -55,16 +56,25 @@ export function ToastContainer({
 
   return (
     <div className={styles.container}>
-      {visibleToasts.map((toast) => (
-        <Toast
-          key={toast.id}
-          id={toast.id}
-          message={toast.message}
-          variant={toast.variant}
-          onDismiss={handleDismiss}
-          isExiting={exitingIds.has(toast.id)}
-        />
-      ))}
+      {visibleToasts.map((toast) => {
+        const isExiting = exitingIds.has(toast.id)
+        return (
+          <div
+            key={toast.id}
+            className={`${styles.toastSlot} ${isExiting ? styles.exiting : ''}`}
+          >
+            <div className={styles.toastSlotInner}>
+              <Toast
+                id={toast.id}
+                message={toast.message}
+                variant={toast.variant}
+                onDismiss={handleDismiss}
+                isExiting={isExiting}
+              />
+            </div>
+          </div>
+        )
+      })}
     </div>
   )
 }

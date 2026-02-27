@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import styles from './Toast.module.css'
 
@@ -21,16 +21,6 @@ export function Toast({
   duration = 5000,
   isExiting = false,
 }: ToastProps) {
-  const [isEntering, setIsEntering] = useState(true)
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsEntering(false)
-    }, 50)
-
-    return () => clearTimeout(timer)
-  }, [])
-
   useEffect(() => {
     if (isExiting) {
       return
@@ -46,14 +36,17 @@ export function Toast({
   const classNames = [
     styles.toast,
     styles[variant],
-    isEntering ? styles.entering : '',
     isExiting ? styles.exiting : '',
   ]
     .filter(Boolean)
     .join(' ')
 
+  const iconChar = variant === 'success' ? '✓' : '✕'
   return (
     <div className={classNames} role="status" aria-live="polite">
+      <span className={styles.icon} aria-hidden>
+        {iconChar}
+      </span>
       <p className={styles.message}>{message}</p>
       <button
         className={styles.closeBtn}
