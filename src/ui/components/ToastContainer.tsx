@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { Toast, type ToastVariant } from './Toast'
 import styles from './ToastContainer.module.css'
@@ -15,16 +15,40 @@ interface ToastContainerProps {
   maxVisible?: number
 }
 
+const EXIT_ANIMATION_DURATION = 250
+
 export function ToastContainer({
   toasts,
   onRemove,
   maxVisible = 4,
 }: ToastContainerProps) {
+  const [exitingIds, setExitingIds] = useState<Set<string>>(new Set())
   const visibleToasts = toasts.slice(-maxVisible)
+
+  useEffect(() => {
+    const idsToRemoveFromExiting: string[] = []
+
+    exitingIds.forEach((id) => {
+      if (!toasts.find((t) => t.id === id)) {
+        idsToRemoveFromExiting.push(id)
+      }
+    })
+
+    if (idsToRemoveFromExiting.length > 0) {
+      setExitingIds(
+        (prev) =>
+          new Set([...prev].filter((id) => !idsToRemoveFromExiting.includes(id))),
+      )
+    }
+  }, [toasts, exitingIds])
 
   const handleDismiss = useCallback(
     (id: string) => {
-      onRemove(id)
+      setExitingIds((prev) => new Set(prev).add(id))
+
+      setTimeout(() => {
+        onRemove(id)
+      }, EXIT_ANIMATION_DURATION)
     },
     [onRemove],
   )
@@ -38,6 +62,7 @@ export function ToastContainer({
           message={toast.message}
           variant={toast.variant}
           onDismiss={handleDismiss}
+          isExiting={exitingIds.has(toast.id)}
         />
       ))}
     </div>
