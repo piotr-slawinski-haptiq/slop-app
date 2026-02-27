@@ -18,12 +18,11 @@ import {
   updateThresholdFn,
   upsertItemFn,
 } from '@/lib/server-fns/slop.functions'
+import { AdminModal } from '@/ui/components/AdminModal'
 import { CentralList } from '@/ui/components/CentralList'
-import { NotificationTray } from '@/ui/components/NotificationTray'
+import { NotificationStrip } from '@/ui/components/NotificationStrip'
 import { Omnisearch } from '@/ui/components/Omnisearch'
 import { ProductCard } from '@/ui/components/ProductCard'
-import { Button } from '@/ui/elements/Button'
-import { Input } from '@/ui/elements/Input'
 
 import styles from './index.module.css'
 
@@ -48,33 +47,15 @@ function formatError(error: unknown): string {
   return 'Unexpected error. Please try again.'
 }
 
-function formatDate(input: Date | null): string {
-  if (!input) {
-    return '—'
-  }
-
-  return new Intl.DateTimeFormat('en', {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-  }).format(new Date(input))
-}
-
 function DashboardPage() {
   const data = Route.useLoaderData()
   const router = useRouter()
   const navigate = useNavigate()
 
-  const [itemName, setItemName] = useState('')
-  const [itemCategory, setItemCategory] = useState('General')
-  const [isEvergreen, setIsEvergreen] = useState(false)
-  const [thresholdInput, setThresholdInput] = useState(
-    String(data.threshold.minPendingItems),
-  )
   const [errorMessage, setErrorMessage] = useState('')
   const [infoMessage, setInfoMessage] = useState('')
   const [isScattering, setIsScattering] = useState(false)
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false)
 
   const currentUser = data.currentUser
   const isOrderer = currentUser.role === 'orderer'
@@ -142,20 +123,14 @@ function DashboardPage() {
     )
   }
 
-  async function onCreateItem() {
+  async function onCreateItem(data: {
+    name: string
+    category: string
+    isEvergreen: boolean
+  }) {
     await withFeedback(
       async () => {
-        await upsertItemFn({
-          data: {
-            name: itemName,
-            category: itemCategory,
-            isEvergreen,
-          },
-        })
-
-        setItemName('')
-        setItemCategory('General')
-        setIsEvergreen(false)
+        await upsertItemFn({ data })
       },
       'Catalog item saved.',
     )
@@ -207,12 +182,11 @@ function DashboardPage() {
     )
   }
 
-  async function onUpdateThreshold() {
-    const parsed = Number(thresholdInput)
+  async function onUpdateThreshold(minPendingItems: number) {
     await withFeedback(
       () =>
         updateThresholdFn({
-          data: { minPendingItems: parsed },
+          data: { minPendingItems },
         }),
       'Threshold updated.',
     )
@@ -281,6 +255,14 @@ function DashboardPage() {
             {currentUser.email}
             <span className={styles.roleBadge}>{currentUser.role}</span>
           </span>
+          {isOrderer && (
+            <button
+              className={styles.adminBtn}
+              onClick={() => setIsAdminModalOpen(true)}
+            >
+              ⚙️ Admin
+            </button>
+          )}
           <button className={styles.signOutBtn} onClick={onSignOut}>
             Sign out
           </button>
@@ -298,6 +280,14 @@ function DashboardPage() {
           />
         </div>
       </div>
+
+      {/* ── Notification strip (orderer only) ── */}
+      {isOrderer && data.notifications.length > 0 && (
+        <NotificationStrip
+          notifications={data.notifications}
+          onDismiss={onDismissNotification}
+        />
+      )}
 
       {/* ── Feedback messages ── */}
       {(errorMessage || infoMessage) && (
@@ -344,146 +334,20 @@ function DashboardPage() {
         </div>
       </main>
 
-      {/* ── Admin panel (orderer only) ── */}
-      {isOrderer ? (
-        <div className={styles.adminPanel}>
-          <hr className={styles.adminDivider} />
-          <div className={styles.adminGrid}>
-            {/* Notifications */}
-            <div className={styles.adminCard}>
-              <div className={styles.adminCardHeader}>
-                <h2 className={styles.adminCardTitle}>Notifications</h2>
-              </div>
-              <div style={{ padding: 0 }}>
-                <NotificationTray
-                  notifications={data.notifications}
-                  onDismiss={onDismissNotification}
-                />
-              </div>
-            </div>
-
-            {/* Catalog management */}
-            <div className={styles.adminCard}>
-              <div className={styles.adminCardHeader}>
-                <h2 className={styles.adminCardTitle}>Catalog</h2>
-              </div>
-              <div className={styles.adminCardBody}>
-                <div className={styles.catalogForm}>
-                  <div className={styles.catalogFormField}>
-                    <span className={styles.fieldLabel}>Name</span>
-                    <Input
-                      value={itemName}
-                      placeholder="Item name"
-                      onChange={(event) => setItemName(event.target.value)}
-                    />
-                  </div>
-                  <div className={styles.catalogFormField}>
-                    <span className={styles.fieldLabel}>Category</span>
-                    <Input
-                      value={itemCategory}
-                      placeholder="Category"
-                      onChange={(event) => setItemCategory(event.target.value)}
-                    />
-                  </div>
-                  <label className={styles.checkboxLabel}>
-                    <input
-                      type="checkbox"
-                      checked={isEvergreen}
-                      onChange={(event) => setIsEvergreen(event.target.checked)}
-                    />
-                    Staple
-                  </label>
-                  <Button onClick={onCreateItem} size="small">
-                    Save
-                  </Button>
-                </div>
-                <ul className={styles.itemsList}>
-                  {data.items.map((item) => (
-                    <li key={item.id} className={styles.itemRow}>
-                      <div className={styles.itemInfo}>
-                        <span className={styles.itemName}>{item.name}</span>
-                        <span className={styles.itemCat}>{item.category}</span>
-                        {item.isEvergreen && (
-                          <span className={styles.itemBadge}>STAPLE</span>
-                        )}
-                      </div>
-                      <div className={styles.itemActions}>
-                        <Button
-                          variant="ghost"
-                          size="small"
-                          onClick={() => onToggleEvergreen(item)}
-                        >
-                          {item.isEvergreen ? 'Unmark' : 'Mark staple'}
-                        </Button>
-                        <Button
-                          variant="danger"
-                          size="small"
-                          onClick={() => onDeleteItem(item.id)}
-                        >
-                          Delete
-                        </Button>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* Threshold */}
-            <div className={styles.adminCard}>
-              <div className={styles.adminCardHeader}>
-                <h2 className={styles.adminCardTitle}>Fulfillment Threshold</h2>
-              </div>
-              <div className={styles.adminCardBody}>
-                <p style={{ margin: 0, fontSize: 'var(--fontSizeSm)', color: 'var(--colorTextMuted)' }}>
-                  Notify orderer when distinct items on the list reach this number.
-                </p>
-                <div className={styles.thresholdForm}>
-                  <div className={styles.thresholdField}>
-                    <Input
-                      type="number"
-                      min={1}
-                      value={thresholdInput}
-                      onChange={(event) => setThresholdInput(event.target.value)}
-                    />
-                  </div>
-                  <Button onClick={onUpdateThreshold} size="small">
-                    Update
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            {/* Past orders */}
-            <div className={styles.adminCard}>
-              <div className={styles.adminCardHeader}>
-                <h2 className={styles.adminCardTitle}>Order History</h2>
-              </div>
-              {data.pastFulfillments.length ? (
-                <ul className={styles.historyList}>
-                  {data.pastFulfillments.map((fulfillment) => (
-                    <li key={fulfillment.id} className={styles.historyRow}>
-                      <p className={styles.historyTitle}>
-                        Order #{fulfillment.id}
-                      </p>
-                      <p className={styles.historyMeta}>
-                        {fulfillment.trigger} · {formatDate(fulfillment.fulfilledAt)}
-                      </p>
-                      <p className={styles.historyMeta}>
-                        {fulfillment.requests
-                          .map((request) => request.itemName)
-                          .join(', ')}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className={styles.historyEmpty}>No past orders yet.</p>
-              )}
-            </div>
-          </div>
-        </div>
-      ) : null}
+      {/* ── Admin modal (orderer only) ── */}
+      {isOrderer && (
+        <AdminModal
+          isOpen={isAdminModalOpen}
+          onClose={() => setIsAdminModalOpen(false)}
+          items={data.items}
+          pastFulfillments={data.pastFulfillments}
+          currentThreshold={data.threshold.minPendingItems}
+          onCreateItem={onCreateItem}
+          onDeleteItem={onDeleteItem}
+          onToggleEvergreen={onToggleEvergreen}
+          onUpdateThreshold={onUpdateThreshold}
+        />
+      )}
     </div>
   )
 }

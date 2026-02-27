@@ -78,6 +78,25 @@
   letter-spacing: 0.05em;
 }
 
+.adminBtn {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--colorTextStrong);
+  border: none;
+  border-radius: var(--radiusSm);
+  padding: 6px 12px;
+  font-size: var(--fontSizeXs);
+  font-weight: var(--fontWeightSemibold);
+  cursor: pointer;
+  transition: background var(--transitionFast);
+  display: flex;
+  align-items: center;
+  gap: var(--space1);
+}
+
+.adminBtn:hover {
+  background: rgba(0, 0, 0, 0.14);
+}
+
 .signOutBtn {
   background: rgba(0, 0, 0, 0.08);
   color: var(--colorTextStrong);
@@ -213,215 +232,3 @@
   }
 }
 
-/* ── Admin panel ── */
-
-.adminPanel {
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 0 var(--space6) var(--space8);
-}
-
-.adminDivider {
-  border: none;
-  border-top: 1px solid var(--colorBorder);
-  margin: var(--space6) 0;
-}
-
-.adminGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: var(--space5);
-  align-items: start;
-}
-
-.adminCard {
-  background: var(--colorSurface);
-  border: 1px solid var(--colorBorder);
-  border-radius: var(--radiusMd);
-  box-shadow: var(--shadowXs);
-  overflow: hidden;
-}
-
-.adminCardHeader {
-  padding: var(--space4);
-  border-bottom: 1px solid var(--colorBorder);
-  background: var(--colorSurfaceSubtle);
-}
-
-.adminCardTitle {
-  margin: 0;
-  font-size: var(--fontSizeSm);
-  font-weight: var(--fontWeightBold);
-  color: var(--colorTextStrong);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.adminCardBody {
-  padding: var(--space4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space3);
-}
-
-/* ── Catalog form ── */
-
-.catalogForm {
-  display: flex;
-  gap: var(--space2);
-  flex-wrap: wrap;
-  align-items: flex-end;
-}
-
-.catalogFormField {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space1);
-  flex: 1;
-  min-width: 120px;
-}
-
-.fieldLabel {
-  font-size: var(--fontSizeXs);
-  font-weight: var(--fontWeightSemibold);
-  color: var(--colorTextMuted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.checkboxLabel {
-  display: flex;
-  align-items: center;
-  gap: var(--space2);
-  font-size: var(--fontSizeSm);
-  font-weight: var(--fontWeightMedium);
-  color: var(--colorTextDefault);
-  cursor: pointer;
-  padding: 8px 0;
-  white-space: nowrap;
-}
-
-.checkboxLabel input[type='checkbox'] {
-  width: 16px;
-  height: 16px;
-  accent-color: var(--colorAccentGreen);
-}
-
-/* ── Catalog item list ── */
-
-.itemsList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.itemRow {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space2);
-  align-items: center;
-  padding: var(--space3) var(--space4);
-  border-bottom: 1px solid var(--colorBorder);
-  transition: background-color var(--transitionFast);
-}
-
-.itemRow:last-child {
-  border-bottom: none;
-}
-
-.itemRow:hover {
-  background: var(--colorSurfaceSubtle);
-}
-
-.itemInfo {
-  display: flex;
-  align-items: center;
-  gap: var(--space2);
-  min-width: 0;
-}
-
-.itemName {
-  font-weight: var(--fontWeightSemibold);
-  font-size: var(--fontSizeSm);
-  color: var(--colorTextStrong);
-}
-
-.itemCat {
-  font-size: var(--fontSizeXs);
-  color: var(--colorTextMuted);
-}
-
-.itemBadge {
-  font-size: 10px;
-  font-weight: var(--fontWeightBold);
-  padding: 2px 8px;
-  border-radius: var(--radiusFull);
-  background: var(--colorAccentGreenLight);
-  color: var(--colorAccentGreen);
-  white-space: nowrap;
-}
-
-.itemActions {
-  display: flex;
-  gap: var(--space1);
-  flex-shrink: 0;
-}
-
-/* ── Threshold section ── */
-
-.thresholdForm {
-  display: flex;
-  gap: var(--space2);
-  align-items: flex-end;
-}
-
-.thresholdField {
-  flex: 1;
-  max-width: 120px;
-}
-
-/* ── Past orders (history) ── */
-
-.historyList {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.historyRow {
-  padding: var(--space3) var(--space4);
-  border-bottom: 1px solid var(--colorBorder);
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.historyRow:last-child {
-  border-bottom: none;
-}
-
-.historyTitle {
-  margin: 0;
-  font-weight: var(--fontWeightSemibold);
-  font-size: var(--fontSizeSm);
-  color: var(--colorTextStrong);
-}
-
-.historyMeta {
-  margin: 0;
-  font-size: var(--fontSizeXs);
-  color: var(--colorTextMuted);
-  line-height: var(--lineHeightBase);
-}
-
-.historyEmpty {
-  padding: var(--space6) var(--space4);
-  text-align: center;
-  color: var(--colorTextMuted);
-  font-size: var(--fontSizeSm);
-}
