@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
-import { Toast, ToastVariant } from './Toast'
+import { Toast, type ToastVariant } from './Toast'
 import styles from './ToastContainer.module.css'
 
 export interface ToastMessage {
