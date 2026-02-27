@@ -112,11 +112,9 @@
 }
 
 .content {
-  flex: 1;
   overflow-y: auto;
   padding: var(--space6);
-  min-height: 500px;
-  max-height: 600px;
+  height: 600px;
 }
 
 .section {
