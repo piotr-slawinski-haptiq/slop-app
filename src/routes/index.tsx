@@ -23,6 +23,10 @@ import { CentralList } from '@/ui/components/CentralList'
 import { NotificationStrip } from '@/ui/components/NotificationStrip'
 import { Omnisearch } from '@/ui/components/Omnisearch'
 import { ProductCard } from '@/ui/components/ProductCard'
+import {
+  ToastContainer,
+  useToasts,
+} from '@/ui/components/ToastContainer'
 
 import styles from './index.module.css'
 
@@ -52,8 +56,7 @@ function DashboardPage() {
   const router = useRouter()
   const navigate = useNavigate()
 
-  const [errorMessage, setErrorMessage] = useState('')
-  const [infoMessage, setInfoMessage] = useState('')
+  const { toasts, showSuccess, showError, removeToast } = useToasts()
   const [isScattering, setIsScattering] = useState(false)
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false)
 
@@ -68,20 +71,15 @@ function DashboardPage() {
     action: () => Promise<T>,
     successMessage?: string,
   ): Promise<T | null> {
-    setErrorMessage('')
-    if (successMessage) {
-      setInfoMessage('')
-    }
-
     try {
       const result = await action()
       if (successMessage) {
-        setInfoMessage(successMessage)
+        showSuccess(successMessage)
       }
       await refreshData()
       return result
     } catch (error) {
-      setErrorMessage(formatError(error))
+      showError(formatError(error))
       return null
     }
   }
@@ -100,16 +98,16 @@ function DashboardPage() {
     }
 
     if (result.alreadyOnList) {
-      setInfoMessage('Item already on the list.')
+      showSuccess('Item already on the list.')
       return
     }
 
     if (result.trigger === 'immediate') {
-      setInfoMessage('Staple item added — order notification sent!')
+      showSuccess('Staple item added — order notification sent!')
     } else if (result.trigger === 'threshold') {
-      setInfoMessage('Threshold reached — time to place an order!')
+      showSuccess('Threshold reached — time to place an order!')
     } else {
-      setInfoMessage('Item added to the list.')
+      showSuccess('Item added to the list.')
     }
   }
 
@@ -289,16 +287,6 @@ function DashboardPage() {
         />
       )}
 
-      {/* ── Feedback messages ── */}
-      {(errorMessage || infoMessage) && (
-        <div className={styles.feedback}>
-          {errorMessage ? (
-            <p className={styles.error}>{errorMessage}</p>
-          ) : null}
-          {infoMessage ? <p className={styles.info}>{infoMessage}</p> : null}
-        </div>
-      )}
-
       {/* ── Main content area ── */}
       <main className={styles.main}>
         <div className={styles.canvas}>
@@ -348,6 +336,9 @@ function DashboardPage() {
           onUpdateThreshold={onUpdateThreshold}
         />
       )}
+
+      {/* ── Toast notifications ── */}
+      <ToastContainer toasts={toasts} onRemove={removeToast} />
     </div>
   )
 }

@@ -1,0 +1,28 @@
+.container {
+  position: fixed;
+  top: var(--space6);
+  right: var(--space6);
+  z-index: calc(var(--zModal) + 10);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  pointer-events: none;
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.container > * {
+  pointer-events: auto;
+  margin-bottom: var(--space3);
+}
+
+.container > *:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+  .container {
+    top: var(--space4);
+    right: var(--space4);
+    left: var(--space4);
+  }
+}
