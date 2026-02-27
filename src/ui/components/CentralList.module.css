@@ -6,6 +6,8 @@
   display: flex;
   flex-direction: column;
   min-height: 320px;
+  /* Constrain height so footer (threshold + Mark as ordered) stays above the fold */
+  max-height: calc(100vh - 200px);
   overflow: hidden;
   transition: border-color var(--transitionBase);
 }
@@ -82,6 +84,7 @@
 
 .body {
   flex: 1;
+  min-height: 0; /* Allow flex child to shrink so overflow scroll works */
   padding: var(--space3);
   overflow-y: auto;
 }
