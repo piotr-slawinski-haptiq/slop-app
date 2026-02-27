@@ -5,7 +5,7 @@
   box-shadow: var(--shadowSm);
   display: flex;
   flex-direction: column;
-  height: var(--panel-height, clamp(360px, 58vh, 640px));
+  height: var(--panel-height, clamp(280px, 52vh, 640px));
   min-height: 0;
   overflow: hidden;
   transition: border-color var(--transitionBase);
