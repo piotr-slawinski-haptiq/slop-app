@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { type CSSProperties, useEffect, useRef, useState } from 'react'
 
 import { Button } from '@/ui/elements/Button'
 
@@ -32,6 +32,65 @@ export function CentralList({
   onDropAdd,
 }: CentralListProps) {
   const [isDropActive, setIsDropActive] = useState(false)
+  const [panelHeight, setPanelHeight] = useState<number | null>(null)
+  const panelRef = useRef<HTMLElement | null>(null)
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return
+    }
+
+    let frameId: number | null = null
+    const panel = panelRef.current
+    if (!panel) {
+      return
+    }
+
+    const updatePanelHeight = () => {
+      const panelTop = panel.getBoundingClientRect().top
+      const availableHeight = Math.floor(window.innerHeight - panelTop - 16)
+      const viewportCap = window.innerHeight - 16
+      const nextHeight = Math.max(280, Math.min(viewportCap, availableHeight))
+      setPanelHeight((currentHeight) =>
+        currentHeight === nextHeight ? currentHeight : nextHeight,
+      )
+    }
+
+    const schedulePanelHeightUpdate = () => {
+      if (frameId !== null) {
+        cancelAnimationFrame(frameId)
+      }
+
+      frameId = requestAnimationFrame(() => {
+        updatePanelHeight()
+        frameId = null
+      })
+    }
+
+    schedulePanelHeightUpdate()
+    window.addEventListener('resize', schedulePanelHeightUpdate)
+
+    const bodyObserver =
+      typeof ResizeObserver !== 'undefined'
+        ? new ResizeObserver(schedulePanelHeightUpdate)
+        : null
+
+    bodyObserver?.observe(document.body)
+
+    return () => {
+      window.removeEventListener('resize', schedulePanelHeightUpdate)
+      bodyObserver?.disconnect()
+      if (frameId !== null) {
+        cancelAnimationFrame(frameId)
+      }
+    }
+  }, [])
+
+  const panelStyle = panelHeight
+    ? ({
+        '--panel-height': `${panelHeight}px`,
+      } as CSSProperties)
+    : undefined
 
   function onDragOver(event: React.DragEvent<HTMLElement>) {
     event.preventDefault()
@@ -56,9 +115,11 @@ export function CentralList({
 
   return (
     <section
+      ref={panelRef}
       className={[styles.panel, isDropActive ? styles.dropTarget : ''].join(
         ' ',
       )}
+      style={panelStyle}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
@@ -139,7 +200,7 @@ export function CentralList({
       </div>
 
       <footer className={styles.footer}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div className={styles.thresholdStatus}>
           <p className={styles.threshold}>{thresholdLabel}</p>
           <div className={styles.thresholdBar}>
             <div
