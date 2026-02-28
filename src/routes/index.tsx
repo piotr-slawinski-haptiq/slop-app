@@ -20,7 +20,7 @@ import {
 } from '@/lib/server-fns/slop.functions'
 import { AdminModal } from '@/ui/components/AdminModal'
 import { CentralList } from '@/ui/components/CentralList'
-import { NotificationStrip } from '@/ui/components/NotificationStrip'
+import { NotificationPopover } from '@/ui/components/NotificationPopover'
 import { Omnisearch } from '@/ui/components/Omnisearch'
 import { ProductCard } from '@/ui/components/ProductCard'
 import {
@@ -249,6 +249,12 @@ function DashboardPage() {
           <p className={styles.brandTag}>Shopping List Ordering Platform</p>
         </div>
         <div className={styles.topBarRight}>
+          {isOrderer && (
+            <NotificationPopover
+              notifications={data.notifications}
+              onDismiss={onDismissNotification}
+            />
+          )}
           <span className={styles.userChip}>
             {currentUser.email}
             <span className={styles.roleBadge}>{currentUser.role}</span>
@@ -278,14 +284,6 @@ function DashboardPage() {
           />
         </div>
       </div>
-
-      {/* ── Notification strip (orderer only) ── */}
-      {isOrderer && data.notifications.length > 0 && (
-        <NotificationStrip
-          notifications={data.notifications}
-          onDismiss={onDismissNotification}
-        />
-      )}
 
       {/* ── Main content area ── */}
       <main className={styles.main}>

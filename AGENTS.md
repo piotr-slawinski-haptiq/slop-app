@@ -80,7 +80,7 @@ SLOP is a single shared office shopping list app. Colleagues add items they need
 │       │   ├── CentralList.tsx / .module.css    # Main shared order list
 │       │   ├── ProductCard.tsx / .module.css     # Draggable product card
 │       │   ├── Omnisearch.tsx / .module.css      # Search/create component
-│       │   └── NotificationTray.tsx / .module.css # Orderer notification list
+│       │   └── NotificationPopover.tsx / .module.css # Orderer notification list
 │       │
 │       └── elements/
 │           ├── Button.tsx / .module.css   # Button (primary, secondary, ghost, danger)
