@@ -1,7 +1,8 @@
-/* ── Toast container (fixed viewport anchor) ── */
+/* ── Toast container (fixed viewport anchor, below header) ── */
+/* topBar 56px + small gap */
 .container {
   position: fixed;
-  top: var(--space6);
+  top: calc(56px + var(--space6));
   right: var(--space6);
   z-index: calc(var(--zModal) + 10);
   display: flex;
@@ -30,7 +31,7 @@
 /* ── Mobile: full-width with smaller insets ── */
 @media (max-width: 640px) {
   .container {
-    top: var(--space4);
+    top: calc(56px + var(--space6));
     right: var(--space3);
     left: var(--space3);
     width: auto;
