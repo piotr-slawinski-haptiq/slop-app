@@ -5,7 +5,8 @@
   box-shadow: var(--shadowSm);
   display: flex;
   flex-direction: column;
-  min-height: 320px;
+  height: var(--panel-height, clamp(280px, 52vh, 640px));
+  min-height: 0;
   overflow: hidden;
   transition: border-color var(--transitionBase);
 }
@@ -82,8 +83,10 @@
 
 .body {
   flex: 1;
+  min-height: 0;
   padding: var(--space3);
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .list {
@@ -179,6 +182,12 @@
   background: var(--colorSurfaceSubtle);
 }
 
+.thresholdStatus {
+  display: flex;
+  align-items: center;
+  gap: var(--space2);
+}
+
 .threshold {
   margin: 0;
   font-size: var(--fontSizeXs);
@@ -200,4 +209,11 @@
   border-radius: var(--radiusFull);
   background: var(--colorAccentGreen);
   transition: width var(--transitionSlow);
+}
+
+@media (min-width: 901px) {
+  .panel {
+    position: sticky;
+    top: var(--space5);
+  }
 }
