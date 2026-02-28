@@ -14,6 +14,7 @@ interface ToastProps {
   toast: ToastData
   onExitComplete: (id: string) => void
   duration?: number
+  forceExit?: boolean
 }
 
 const CheckIcon = () => (
@@ -46,13 +47,17 @@ const CloseIcon = () => (
   </svg>
 )
 
-export function Toast({ toast, onExitComplete, duration = 5000 }: ToastProps) {
+export function Toast({ toast, onExitComplete, duration = 5000, forceExit }: ToastProps) {
   const [isExiting, setIsExiting] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
 
   const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined)
   const elapsedRef = useRef(0)
   const startRef = useRef(Date.now())
+
+  useEffect(() => {
+    if (forceExit && !isExiting) setIsExiting(true)
+  }, [forceExit, isExiting])
 
   useEffect(() => {
     if (isExiting) return
